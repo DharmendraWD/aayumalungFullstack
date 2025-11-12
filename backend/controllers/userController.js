@@ -1,0 +1,360 @@
+import { ok } from "assert";
+import { sendOtpMail } from "../emailVerify/sendOtpMail.js";
+import { verifyMail } from "../emailVerify/verifyMail.js";
+import { Session } from "../models/sessionModel.js";
+import { User } from "../models/userModel.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+
+export const registerUser = async (req, res) => {
+  try {
+const { username, email, password } = req.body;
+
+// check if all fields are present
+if (!username || !email || !password) {
+  return res.status(400).json({ message: "All fields are required" });
+}
+
+// check existing user
+const existingUser = await User.findOne({ email });
+if (existingUser) {
+  return res.status(400).json({ message: "User already exists" });
+}
+
+// if everything fine create new user
+const hashedPassword = await bcrypt.hash(password, 10);
+const newUser = await User.create({
+    username,
+    email,
+    password:hashedPassword
+})
+
+// verify maail 
+// creating token 
+const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
+verifyMail(token, email)
+
+newUser.token = token;
+await newUser.save();
+
+return res.status(201).json({ message: "User created successfully", 
+    data: newUser
+}
+);
+
+
+} catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+export const verification = async(req, res) => {
+    try{
+        const authHeader = req.headers.authorization;
+        if(!authHeader || !authHeader.startsWith("Bearer ")){
+            return res.status(401).json({message:"Unauthorized"});
+        }
+
+
+        const token = authHeader.split(" ")[1];
+        let decoded;
+        try{
+            decoded = jwt.verify(token, process.env.JWT_SECRET);
+        }catch(e){
+            if(e.name === "TokenExpiredError"){
+                return res.status(401).json({message:"token expired try again", success:false});
+            }
+            
+        }
+
+
+        const user = await User.findById(decoded.id);
+        if(!user){
+            return res.status(401).json({message:"user Not found"});
+        }
+        user.isVerified = true;
+        user.token = null;
+        await user.save();
+        return res.status(200).json({message:"Email verified successfully", success:true});
+        
+    }catch{
+return res.status(500).json({"message":"Invalid TOken", success:false});
+    }
+}
+
+
+// export const loginUser = async (req, res) => {
+//     try {
+//       const { email, password } = req.body;
+//       console.log(req.body)
+// //   if blanks 
+// if (!email || !password) {
+//   return res.status(400).json({ message: "All fields are required" });
+// }
+
+//       // check existing user
+//       const user = await User.findOne({ email });
+//       if (!user) {
+//         return res.status(400).json({ message: "User does not exist" });
+//       }
+  
+//       // check password
+//       const isPasswordValid = await bcrypt.compare(password, user.password);
+//       if (!isPasswordValid) {
+//         return res.status(400).json({ message: "Invalid password" });
+//       }
+
+//     //   check if user verified 
+//     if(!user.isVerified){
+//         return res.status(400).json({message:"Please verify your email"});
+//     }
+  
+// // check if session exists then delete it 
+// const session = await Session.findOne({ userId: user._id });
+// if (session) {
+//   await session.deleteOne();
+// }
+
+// // if no session then create one 
+//  await Session.create({ userId: user._id });
+
+// //  generate token 
+// const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "10d" });
+// const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+
+// user.isLoggedIn = true;
+// await user.save();
+
+// return res.status(200).json({ message: `Login successful ${user.username}`, 
+//     data: { accessToken: accessToken, refreshToken: refreshToken , user: user} });
+    
+//     } catch (error) {
+//       res.status(500).json({ message: error.message });
+//     }
+//   };
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "User does not exist" });
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return res.status(400).json({ message: "Invalid password" });
+
+    if (!user.isVerified) return res.status(400).json({ message: "Please verify your email" });
+
+    // remove old session if exists
+    const session = await Session.findOne({ userId: user._id });
+    if (session) await session.deleteOne();
+
+    await Session.create({ userId: user._id });
+
+    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "10d" });
+    const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+
+    user.isLoggedIn = true;
+    await user.save();
+
+    // ✅ Set cookies
+        res.cookie('email', user.email, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
+      sameSite: 'lax',
+    });
+    res.cookie('username', user.username, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
+      sameSite: 'lax',
+    });
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
+      sameSite: 'lax',
+    });
+
+    // res.cookie('refreshToken', refreshToken, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    //   sameSite: 'lax',
+    // });
+
+    return res.status(200).json({
+      message: `Login successful ${user.username}`,
+      data: { refreshToken, accessToken, user },
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+// logout user 
+  export const logoutUser = async (req, res) => {
+    try {
+      const userId = req.userId.id.toString('hex');
+        await Session.deleteMany({ userId });
+        await User.findByIdAndUpdate(userId, { isLoggedIn: false });
+return res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+      res.status(500).json({ message: error.message, "yjy":"gdfd" });
+    }
+  };
+
+
+  // forgot pasword 
+  export const forgotPassword = async (req, res) => {
+    try {
+const {email} = req.body;
+const user = await User.findOne({email});
+if(!user){
+    return res.status(400).json({message:"User does not exist", ok:false});
+}
+
+const otp = Math.floor(100000 + Math.random() * 900000).toString().padStart(6, "0");
+const expiry = new Date(Date.now() + 10 * 60 * 1000); // 5 minutes from now
+user.otp = otp;
+user.otpExpiry = expiry;
+await user.save();
+
+await sendOtpMail(email, otp);
+
+return res.status(200).json({message:"OTP sent successfully", data: user, ok:true});
+        
+    } catch (error) {
+        return res.status(500).json({ message: error.message + "while forgetting password", ok:false });
+    }
+  }
+
+// verify otp 
+  export const verifyOtp = async (req, res) => {
+  try {
+    const email = req.params.email;
+const {otp} = req.body;
+const user = await User.findOne({email});
+if(!user){
+    return res.status(400).json({message:"User does not exist", ok:false});
+}
+
+if(!user.otp || !user.otpExpiry){
+    return res.status(400).json({message:"OTP not sent or already verified.", ok:false});
+} 
+
+if(user.otpExpiry < Date.now()){
+    return res.status(400).json({message:"OTP expired", ok:false});
+}
+
+
+if(user.otp !== otp){
+    return res.status(400).json({message:"Invalid OTP", ok:false});
+}
+
+
+// user.otp = null;
+// user.otpExpiry = null;
+await user.save();
+return res.status(200).json({message:"OTP verified successfully", ok:true});
+
+  } catch (error) {
+    return res.status(500).json({ message: error.message + "while verifying otp." , ok:false});
+  }
+  }
+
+
+// change passwor d
+export const changePassword = async (req, res) => {
+  try {
+    const { newPassword, confirmPassword, oldPassword } = req.body;
+    const { email } = req.params;
+
+    // 1️ Validate input
+    if (!newPassword || !confirmPassword || !oldPassword) {
+      return res.status(400).json({ message: "All fields are required.", success: false });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match.", success: false });
+    }
+
+    // 2️ Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found.", success: false });
+    }
+
+    // 3️ Check old password validity
+    const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+    if (!isOldPasswordCorrect) {
+      return res.status(400).json({ message: "Old password is incorrect.", success: false });
+    }
+
+    // 4️Prevent reusing the same password
+    const isSamePassword = await bcrypt.compare(newPassword, user.password);
+    if (isSamePassword) {
+      return res.status(400).json({
+        message: "New password cannot be the same as the old password.",
+        success: false,
+      });
+    }
+
+    // 5️Hash new password and save
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: "Password changed successfully.", success: true });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return res.status(500).json({ message: "Internal server error." , success: false});
+  }
+};
+
+// reset password 
+export const resetPassword = async (req, res) => {
+  try {
+    const { newPassword, confirmPassword, otp } = req.body;
+    const { email } = req.params;
+
+    // 1️ Validate input
+    if (!newPassword || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required.", success: false });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match.", success: false });
+    }
+
+    // 2️ Find user
+    const user = await User.findOne({ otp });
+    if (!user) {
+      return res.status(404).json({ message: "User not found. or otp expired", success: false });
+    }
+
+    // 3️Hash new password and save
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.otp = null;
+user.otpExpiry = null;
+    await user.save();
+
+    return res.status(200).json({ message: "Password changed successfully.", success: true });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return res.status(500).json({ message: "Internal server error." , success: false});
+  }
+}
+
