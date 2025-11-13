@@ -101,12 +101,11 @@ export async function proxy(request) {
   // Allow public routes and dynamic email verification route
   const isPublicRoute =
     PUBLIC_ROUTES.includes(pathname) ||
-    pathname.startsWith('/admin/verifying-mail/') || pathname.startsWith('/admin/verify-otp/') || pathname.startsWith('/admin/change-password',) || pathname.startsWith('/admin/reset-password',); // ✅ dynamic route allowed
+    pathname.startsWith('/admin/verifying-mail/') || pathname.startsWith('/admin/verify-otp/') || pathname.startsWith('/admin/reset-password',); // ✅ dynamic route allowed
 
-  // ✅ Special case: /admin/change-password is protected
-  // const isChangePassword = pathname === '/admin/change-password';
 
-  if (!isPublicRoute ) {
+
+  if (!isPublicRoute) {
     if (authCookie) {
       try {
         jwt.verify(authCookie, process.env.JWT_SECRET);

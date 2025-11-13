@@ -78,7 +78,7 @@ export default function ChangePasswordClient({ email, accessToken }) {
 
   return (
     <>
-      <h2>{email}</h2>
+      {/* <h2>{email}</h2> */}
       <div className="relative h-screen bg-gray-50 overflow-hidden">
         {/* Background blobs */}
         <div className="absolute top-20 left-2 w-[500px] h-[500px] bg-[#D1208A80] rounded-full mix-blend-multiply filter blur-[150px] opacity-70 animate-blob"></div>
@@ -143,7 +143,7 @@ export default function ChangePasswordClient({ email, accessToken }) {
 
                     {
                 error.includes("successfully") ?  
-                <Link href="/admin/dashboard" className="flex w-full justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                <Link href="/admin/dashboard" className="flex cursor-pointer w-full justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                 
                     
                    
@@ -151,7 +151,7 @@ export default function ChangePasswordClient({ email, accessToken }) {
              <b className='mr-1'>Successfully </b>  Changesd go to Dashboard
                   </Link> :    <button
                     type="submit"
-                    className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="flex w-full cursor-pointer justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     disabled={isLoading}
                   >
                     {isLoading ? 'Loading...' : 'Submit'}

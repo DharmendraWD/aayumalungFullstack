@@ -1,0 +1,35 @@
+.adminBg{
+    border-radius: 50px;
+  background: #101828;
+  /* background: #525e6e; */
+  box-shadow: 20px 20px 60px #1a1a1a, -20px -20px 60px #151515;
+}
+.popupTextClr{
+  color: #d3d7df;
+}
+
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.4s ease-out forwards;
+}
+
+.cardBg{
+  background: #182237;
+}
+.adminCardTextClr{
+   color: rgb(160, 172, 195);
+}
+.adminCardTextValueClr{
+   color: rgb(126, 158, 210);
+}

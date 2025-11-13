@@ -2,17 +2,18 @@ import { Hero } from "../../models/homepage/heroModel.js";
 import cloudinary from "../../config/cloudinary.js";
 import path from "path";
 import fs from "fs";
+import { ok } from "assert";
 
 
 
 
 export const getAllHeroesItems = async (req, res) => {
   try {
-    const hero = await Hero.findOne(); // assuming you have one hero section
-    res.status(200).json(hero);
+    const hero = await Hero.find(); // assuming you have one hero section
+    return res.status(200).json({ hero, ok: true });
   } catch (error) {
     console.error("Error fetching hero:", error);
-    res.status(500).json({ message: "Failed to fetch hero" });
+    res.status(500).json({ message: "Failed to fetch hero", ok: false });
   }
 };
 
