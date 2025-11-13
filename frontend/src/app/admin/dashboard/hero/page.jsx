@@ -32,15 +32,42 @@ const hero = async () => {
 <PopupModal /> */}
 <div className=" mt-[30px]">
      <h1 className="text-xl bg-[#3a4351] px-6 rounded py-4 mx-4 adminCardTextClr font-medium">
-      Hero Buttons and Button's Link
+      Hero Section Text and Button
     </h1>
 
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-4">
+<div className="relative  transform transition-transform duration-300 hover:scale-105 flex flex-col h-fit my-6 cardBg shadow-sm  rounded-lg w-96">
+  <div className="mx-3 mb-0  pt-3 pb-2 px-1">
+    <span className="text-l adminCardTextClr font-medium">
+      Hero Title
+    </span>
+  </div>
+  
+  <div className="p-4">
+    <h5 className="mb-2 adminCardTextValueClr text-xl font-semibold">
+      {HeroData?.hero[0]?.title}
+    </h5>
+  </div>
+</div>
+<div className="relative  transform transition-transform duration-300 hover:scale-105 flex flex-col h-fit my-6 cardBg shadow-sm  rounded-lg w-96">
+  <div className="mx-3 mb-0  pt-3 pb-2 px-1">
+    <span className="text-l adminCardTextClr font-medium">
+      Description
+    </span>
+  </div>
+  
+  <div className="p-4">
+    <h5 className="mb-2 adminCardTextValueClr text-xl font-semibold">
+      {HeroData?.hero[0]?.description}
+    </h5>
+  </div>
+</div>
+
 
 <div className="relative  transform transition-transform duration-300 hover:scale-105 flex flex-col my-6 cardBg h-fit shadow-sm  rounded-lg w-96">
   <div className="mx-3 mb-0pt-3 pb-2 px-1">
     <span className="text-l adminCardTextClr font-medium">
-      Hero First Button Text 
+       First Button Text 
     </span>
   </div>
   
@@ -54,7 +81,7 @@ const hero = async () => {
 <div className="relative  transform transition-transform duration-300 hover:scale-105 flex flex-col my-6 cardBg shadow-sm  h-fit  rounded-lg w-96">
   <div className="mx-3 mb-0 pt-3 pb-2 px-1">
     <span className="text-l adminCardTextClr font-medium">
-      Hero Second Button Text
+       Second Button Text
     </span>
   </div>
   
@@ -71,7 +98,7 @@ const hero = async () => {
 <div className="relative  transform transition-transform duration-300 hover:scale-105 flex flex-col my-6 cardBg shadow-sm  h-fit  rounded-lg w-96">
   <div className="mx-3 mb-0  pt-3 pb-2 px-1">
     <span className="text-l adminCardTextClr font-medium">
-      Hero First Button Link
+       First Button Link
     </span>
   </div>
   
@@ -86,7 +113,7 @@ const hero = async () => {
 <div className="relative  transform transition-transform duration-300 hover:scale-105 flex flex-col my-6 cardBg shadow-sm h-fit  rounded-lg w-96">
   <div className="mx-3 mb-0  pt-3 pb-2 px-1">
     <span className="text-l adminCardTextClr font-medium">
-      Hero Second Button Link
+       Second Button Link
     </span>
   </div>
   
@@ -97,20 +124,6 @@ const hero = async () => {
   </div>
 </div>
 
-{/* 5th  */}
-<div className="relative  transform transition-transform duration-300 hover:scale-105 flex flex-col h-fit my-6 cardBg shadow-sm  rounded-lg w-96">
-  <div className="mx-3 mb-0  pt-3 pb-2 px-1">
-    <span className="text-l adminCardTextClr font-medium">
-      Hero Title
-    </span>
-  </div>
-  
-  <div className="p-4">
-    <h5 className="mb-2 adminCardTextValueClr text-xl font-semibold">
-      {HeroData?.hero[0]?.title}
-    </h5>
-  </div>
-</div>
 
 </div></div>
 
@@ -121,17 +134,16 @@ const hero = async () => {
    <h1 className="text-xl bg-[#3a4351] px-6 rounded py-4 mx-4 adminCardTextClr font-medium">
       Hero Scrolling Images
     </h1>
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+<div className=" mx-1 mt-4">
   {HeroData?.hero?.map((hero, i) => (
     <div
       key={i}
-      className="flex  transform transition-transform duration-300 hover:scale-105 flex-col cardBg shadow-sm  rounded-lg my-6 w-full sm:w-96"
+      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pt-4"
     >
-      <div className="m-2.5 overflow-hidden rounded-md h-80 flex justify-center items-center">
         {/* ✅ Loop through all images */}
         {hero.images && hero.images.length > 0 ? (
           hero.images.map((img, index) => (
-            <div key={index} className="flex flex-col justify-center items-center">
+            <div key={index} className="flex flex-col cardBg justify-center items-center m-2.5 overflow-hidden rounded-md h-80 flex justify-center items-center">
             <img
           
               src={img.startsWith("http") ? img : `${BASE_CONTENT}${img}`}
@@ -159,7 +171,6 @@ Hero Scrolling Image {index + 1}
     </p>
 </div>
         )}
-      </div>
 
     </div>
   ))}
@@ -167,8 +178,10 @@ Hero Scrolling Image {index + 1}
 </div>
 
 
-<PopupModal HeroData={HeroData}/> 
+<div className="mt-6">
+  <PopupModal HeroData={HeroData}/> 
 
+</div>
 
 </>
 

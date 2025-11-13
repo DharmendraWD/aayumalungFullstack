@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/hero", getAllHeroesItems);
 
 // POST to update (multiple images allowed)
-router.post("/hero", upload.array("images", 10), updateHeroItem);
+router.put("/hero", upload.array("images", 10), updateHeroItem);
 
 // DELETE image
 router.delete("/hero", deleteImage);

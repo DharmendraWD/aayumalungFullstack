@@ -42,7 +42,7 @@ export const updateHeroItem = async (req, res) => {
     // Merge new images with existing ones
     const totalImages = hero.images.length + imageUrls.length;
     if (totalImages > 10) {
-      return res.status(400).json({ message: "Maximum 10 images allowed" });
+      return res.status(400).json({ message: "Maximum 10 images allowed", ok: false });
     }
 
     if (imageUrls.length > 0) {
@@ -51,13 +51,12 @@ export const updateHeroItem = async (req, res) => {
 
     await hero.save();
 
-    res.status(200).json({
-      message: "Hero section updated successfully",
-      hero,
+    return res.status(200).json({
+      message: "Hero section updated successfully",ok:true
     });
   } catch (error) {
     console.error("Error updating hero item:", error);
-    res.status(500).json({ message: "Failed to update hero item" });
+   return res.status(500).json({ message: "Failed to update hero item", ok:false });
   }
 };
 

@@ -1,4 +1,5 @@
 "use client";
+import Loading from "../../loading";
 
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
@@ -7,12 +8,17 @@ import { FaTrash } from "react-icons/fa";
 
 export default function PopupModal({HeroData}) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isloading, setisloading] = useState(false);
   const [btn1Text, setbtn1Text] = useState(HeroData?.hero[0]?.button1Text);
   const [btn2Text, setbtn2Text] = useState(HeroData?.hero[0]?.button2Text);
   const [btn1Link, setbtn1Link] = useState(HeroData?.hero[0]?.button1Link);
   const [btn2Link, setbtn2Link] = useState(HeroData?.hero[0]?.button2Link);
+  const [title, settitle] = useState(HeroData?.hero[0]?.title);
+  const [desc, setdesc] = useState(HeroData?.hero[0]?.description);
   const [inputValue, setInputValue] = useState("");
+  const [message, setMessage] = useState("");
     const BASE_CONTENT = process.env.NEXT_PUBLIC_BASE_CONTENT;
+    const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 
 
 
@@ -54,13 +60,69 @@ console.log(images)
     setConfirmDeleteIndex(null);
   };
 
+
+// ------to post on click submit 
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", desc);
+    formData.append("button1Text", btn1Text);
+    formData.append("button1Link", btn1Link);
+    formData.append("button2Text", btn2Text);
+    formData.append("button2Link", btn2Link);
+
+    // -------------------------------------------------------------------
+    // FIX HERE: Use the same field name 'images' for every file.
+    // -------------------------------------------------------------------
+    images.forEach((image) => {
+      // ONLY append the file object if it's a new file (has 'file' property)
+      // Existing images loaded from HeroData only have 'preview'
+      if (image.file) { 
+        // The field name 'images' must match the array name in your backend Multer setup.
+        formData.append("images", image.file); 
+      }
+    });
+    // -------------------------------------------------------------------
+
+    // ... rest of the fetch logic ...
+    try {
+      // ... (fetch code remains the same)
+      isloading(true);
+      const response = await fetch(`${BASE_API}/homepage/hero`, {
+        method: "PUT",
+        body: formData,
+      });
+      // ...
+      
+      // I also recommend checking the backend response for a clearer error message:
+      const result = await response.json(); 
+
+      if (response.ok) {
+        isloading(false);
+        setMessage(`Success: ${result.message}`);
+        // Optionally update the images state with the new paths from the successful response
+      } else {
+        isloading(false);
+        setMessage(`Error: ${result.message || "Failed to submit form"}`);
+        console.error("API Error:", result);
+      }
+    } catch (error) {
+      isloading(false);
+      setMessage("Connection error. Check console for details.");
+      console.error("Error submitting form:", error);
+    }
+  }
+// ...
+
   return (
     <>
 
 <div className="w-full flex justify-center ">
           <button
       onClick={() => setIsOpen(true)}
-  className="inline-flex items-center justify-center px-4 py-2 cursor-pointer bg-blue-600 ease-in-out delay-75 hover:bg-blue-700 text-white text-xl font-medium rounded-md hover:-translate-y-1 min-w-[150px] hover:scale-105 active:scale-100 transition-all duration-200"
+  className="inline-flex items-center justify-center px-4 py-2 cursor-pointer bg-blue-600 ease-in-out delay-75 hover:bg-blue-700 text-white text-xl font-medium rounded-md hover:-translate-y-1 min-w-[100px] hover:scale-105 active:scale-100 transition-all duration-200"
 >
   <svg
     className="h-5 w-5 mr-1 self-center items-center"
@@ -83,6 +145,10 @@ console.log(images)
           className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
           onClick={() => setIsOpen(false)} // closes when clicking outside
         >
+{/* 
+          <div className="absoulte">
+            <Loading></Loading>
+          </div> */}
           {/* Popup Container */}
           <div
             onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
@@ -97,8 +163,35 @@ console.log(images)
               Update Hero Section
             </h2>
 
+            <h1 className="text-xl text-center mb-2">{message}</h1>
+
+<form action="" method="PUT">
            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-4">
              {/* Input */}
+            <div className="mb-6">
+              <label className="block popupTextClr text-sm font-medium mb-2">
+             Title
+              </label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => settitle(e.target.value)}
+                placeholder="Type your name..."
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block popupTextClr text-sm font-medium mb-2">
+              First Button Text
+              </label>
+              <input
+                type="text"
+                value={desc}
+                onChange={(e) => setdesc(e.target.value)}
+                placeholder="Type your name..."
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+            </div>
             <div className="mb-6">
               <label className="block popupTextClr text-sm font-medium mb-2">
               First Button Text
@@ -148,7 +241,7 @@ console.log(images)
               />
             </div>
            </div>
-
+</form>
            {/* images  */}
            <div>
   <div className="p-4">
@@ -218,13 +311,10 @@ console.log(images)
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  alert(`Saved: ${inputValue}`);
-                  setIsOpen(false);
-                }}
+                onClick={handleSubmit}
                 className="px-4 cursor-pointer py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
               >
-                Save
+                {isloading ? 'Updateing...' : 'Update'}
               </button>
             </div>
           </div>
