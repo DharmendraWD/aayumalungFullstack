@@ -54,7 +54,7 @@ const handleSubmit = async (e) => {
 
 
   return (
-  <div className="relative h-screen bg-gray-50 overflow-hidden">
+  <div className="relative h-screen bg-gray-50">
     <div
         className="absolute top-20 left-2 w-[500px] h-[500px] bg-[#D1208A80] rounded-full mix-blend-multiply filter blur-[150px] opacity-70 animate-blob">
     </div>
@@ -67,7 +67,7 @@ const handleSubmit = async (e) => {
     <div
         className="absolute bottom-10 right-52 w-[500px] z-[-1] h-[500px] bg-[#CAEEF580] rounded-full mix-blend-multiply filter blur-[150px] opacity-70 animate-blob animation-delay-4000">
     </div>
-    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-full flex-col z-[990] relative justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <Image className="mx-auto w-auto"
             width={300}

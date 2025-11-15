@@ -6,6 +6,15 @@ import { usePathname } from 'next/navigation'; // ✅ Added for active route hig
 // Import necessary icons from react-icons/fa and react-icons/io
 import { FaHome, FaUsers, FaCog, FaChartLine, FaBars, FaTimes, FaLayerGroup } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
+import { GrDomain } from "react-icons/gr";
+import { BsFillInfoSquareFill } from "react-icons/bs";
+import { GoGoal } from "react-icons/go";
+import { AiOutlineTeam } from "react-icons/ai";
+import { GrGallery } from "react-icons/gr";
+import { FaRegNewspaper } from "react-icons/fa";
+import { MdContactMail } from "react-icons/md";
+import { FaQuoteLeft } from "react-icons/fa";
+import { CgToolbarBottom } from "react-icons/cg";
 
 function SidebarItem({ item, email, username }) {
   const pathname = usePathname(); // ✅ Get current route
@@ -109,47 +118,47 @@ export default function SidebarMenu({ email, username }) {
     },
     {
       title: 'Hero',
-      icon: FaChartLine,
+      icon: GrDomain,
       href: '/admin/dashboard/hero',
     },
     {
       title: 'About Us Section',
-      icon: FaCog,
-      href: '/settings',
+      icon: BsFillInfoSquareFill,
+      href: '/admin/dashboard/aboutus',
     },
     {
       title: 'Mission Section',
-      icon: FaCog,
-      href: '/settings',
+      icon: GoGoal,
+      href: '/admin/dashboard/missions',
     },
     {
       title: 'Our Team',
-      icon: FaCog,
+      icon: AiOutlineTeam,
       href: '/settings',
     },
     {
       title: 'Gallary',
-      icon: FaCog,
+      icon: GrGallery,
       href: '/settings',
     },
     {
       title: 'News and Case',
-      icon: FaCog,
+      icon: FaRegNewspaper,
       href: '/settings',
     },
     {
       title: 'Contact Us',
-      icon: FaCog,
+      icon: MdContactMail,
       href: '/settings',
     },
     {
       title: 'FAQs',
-      icon: FaCog,
+      icon: FaQuoteLeft,
       href: '/settings',
     },
     {
       title: 'Footer',
-      icon: FaLayerGroup,
+      icon: CgToolbarBottom,
       submenus: [
         { title: 'CTA', href: '/products' },
         { title: 'Footer Links', href: '/products/new' },

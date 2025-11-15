@@ -79,15 +79,18 @@ const page = () => {
     </div>
     <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
+
+                       <Link href={"/admin/login"}>
             <Image className="mx-auto w-auto"
             width={300}
             height={300}
                     src={logo} alt=" Company"/>
+           </Link>
             <h2 className="mt-6 text-center text-1xl font-bold tracking-tight text-gray-900">Enter your registered email, An OTP will be sent to Verify weather it's you.
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
              
-                <Link href="/admin/dashboard" className="font-medium text-indigo-600 hover:text-indigo-500">Go to Dashboard Instead
+                <Link href="/admin/dashboard" className="font-medium text-indigo-600 z-50 relative hover:text-indigo-500">Go to Dashboard Instead
                     </Link>
                     </p>
 

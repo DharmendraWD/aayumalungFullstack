@@ -2,7 +2,7 @@
     border-radius: 50px;
   background: #101828;
   /* background: #525e6e; */
-  box-shadow: 20px 20px 60px #1a1a1a, -20px -20px 60px #151515;
+  /* box-shadow: 20px 20px 60px #1a1a1a, -20px -20px 60px #151515; */
 }
 .popupTextClr{
   color: #d3d7df;
@@ -32,4 +32,29 @@
 }
 .adminCardTextValueClr{
    color: rgb(126, 158, 210);
+}
+.adminCardTextClr2{
+   color: #9dbbe7;
+}
+
+/* Base Styles (for screens smaller than 640px) */
+.grid-container {
+  display: grid;
+  grid-template-columns:(1, 1fr, 1fr minmax(200px, 1fr)); /* 1 column */
+  gap: 1rem; /* 16px gap */
+
+}
+
+/* Small screen and up (640px) */
+@media (min-width: 640px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
+}
+
+/* Medium screen and up (768px) */
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  }
 }

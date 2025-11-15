@@ -225,15 +225,16 @@ const username = cookieStore.get('username')?.value;
   return(
 
     <div>
-    <div className="min-h-screen  mt-[100px]  text-gray-100 flex flex-col items-center p-4 sm:p-8">
+    <div className="min-h-screen  mt-[40px]  text-gray-100 flex flex-col items-center p-4 sm:p-8">
       <div className=" w-full ">
         {/* Title and Emoji */}
-        <h1 className="text-4xl capitalize sm:text-5xl font-extrabold mb-4 text-white">
+        <h1 className="text-4xl capitalize sm:text-2xl font-extrabold mb-4 text-white">
           Welcome to Dashboard <b className='bold'> {username} </b>! 👋
         </h1>
 
         
         <p className="text-basetext-start sm:text-lg text-gray-300 mb-10 leading-relaxed max-w-2xl">
+        Quick summary of all editable sections and content statistics. Edit the content and stats to reflect your project's progress.
          
         </p>
 

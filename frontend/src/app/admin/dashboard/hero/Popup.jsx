@@ -7,6 +7,7 @@ import { FaTimes } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
 
 export default function PopupModal({HeroData}) {
+  // console.log(HeroData)
   const [isOpen, setIsOpen] = useState(false);
   const [isloading, setisloading] = useState(false);
   const [btn1Text, setbtn1Text] = useState(HeroData?.hero[0]?.button1Text);
@@ -17,16 +18,24 @@ export default function PopupModal({HeroData}) {
   const [desc, setdesc] = useState(HeroData?.hero[0]?.description);
   const [inputValue, setInputValue] = useState("");
   const [message, setMessage] = useState("");
-    const BASE_CONTENT = process.env.NEXT_PUBLIC_BASE_CONTENT;
-    const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
 
-
-
+  
+  
+  const [hideMessageInterval, setHideMessageInterval] = useState(true);
+  
+  
+  
+  const BASE_CONTENT = process.env.NEXT_PUBLIC_BASE_CONTENT;
+  const BASE_API = process.env.NEXT_PUBLIC_BASE_API;
+  
+  
+  
   // image preview 
   // const [images, setImages] = useState([HeroData?.hero[0]?.images]);
   const [images, setImages] = useState(
-  HeroData?.hero[0]?.images?.map((imgPath) => ({ preview: `${BASE_CONTENT}${imgPath}` })) || []
-);
+    HeroData?.hero[0]?.images?.map((imgPath) => ({ preview: `${BASE_CONTENT}${imgPath}` })) || []
+  );
+
   const [confirmDeleteIndex, setConfirmDeleteIndex] = useState(null);
 
   // Handle file selection
@@ -41,24 +50,39 @@ const handleFileChange = (e) => {
   // Append new images to existing images
   setImages((prev) => [...prev, ...newImages]);
 };
-console.log(images)
+
   // Handle delete confirmation
   const handleDelete = (index) => {
     setConfirmDeleteIndex(index);
   };
 
   // Confirm deletion
-  const confirmDelete = () => {
-    if (confirmDeleteIndex !== null) {
-      setImages((prev) => prev.filter((_, i) => i !== confirmDeleteIndex));
-      setConfirmDeleteIndex(null);
+const confirmDelete = (imageToBeDeleted) => {
+  const imgObj = images[confirmDeleteIndex];
+
+  // 1️⃣ Remove from React state
+  setImages(prev => prev.filter((_, i) => i !== confirmDeleteIndex));
+  setConfirmDeleteIndex(null);
+
+  // 2️⃣ If image has NO file → it's from server → call DELETE API
+  if (!imgObj.file) {
+    // Extract /uploads/... path
+    const match = imgObj.preview.match(/uploads\/.+$/);
+    if (match) {
+      const delPath = match[0];
+      handleImageDelete(delPath);
+    } else {
+      console.warn("Image is not from server, skipping delete API.");
     }
-  };
+  }
+};
+
 
   // Cancel deletion
   const cancelDelete = () => {
     setConfirmDeleteIndex(null);
   };
+
 
 
 // ------to post on click submit 
@@ -89,7 +113,7 @@ const handleSubmit = async (e) => {
     // ... rest of the fetch logic ...
     try {
       // ... (fetch code remains the same)
-      isloading(true);
+      setisloading(true);
       const response = await fetch(`${BASE_API}/homepage/hero`, {
         method: "PUT",
         body: formData,
@@ -100,21 +124,59 @@ const handleSubmit = async (e) => {
       const result = await response.json(); 
 
       if (response.ok) {
-        isloading(false);
+        setisloading(false);
         setMessage(`Success: ${result.message}`);
+        setHideMessageInterval(false);
+
+        setTimeout(() => {
+          setHideMessageInterval(true);
+        }, 3000);
         // Optionally update the images state with the new paths from the successful response
       } else {
-        isloading(false);
+        setisloading(false);
         setMessage(`Error: ${result.message || "Failed to submit form"}`);
         console.error("API Error:", result);
       }
     } catch (error) {
-      isloading(false);
+      setisloading(false);
       setMessage("Connection error. Check console for details.");
       console.error("Error submitting form:", error);
     }
   }
 // ...
+
+
+const handleImageDelete = async (delPath) => {
+  try {
+    const response = await fetch(`${BASE_API}/homepage/hero`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: delPath }),  
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      setisloading(false);
+      setMessage(`Success: ${result.message}`);
+             setHideMessageInterval(false);
+
+        setTimeout(() => {
+          setHideMessageInterval(true);
+        }, 3000);
+    } else {
+      setisloading(false);
+      setMessage(`Error: ${result.message || "Failed to delete image"}`);
+      console.error("API Error:", result);
+    }
+  } catch (error) {
+    setisloading(false);
+    setMessage("Connection error. Check console for details.");
+    console.error(error);
+  }
+};
 
   return (
     <>
@@ -163,7 +225,17 @@ const handleSubmit = async (e) => {
               Update Hero Section
             </h2>
 
-            <h1 className="text-xl text-center mb-2">{message}</h1>
+{
+  !hideMessageInterval && (
+    <>
+    { message.toLowerCase().includes("successfully") ? (
+  <h1 className="text-xl text-center mb-2 text-[#3dee3d]">{message}</h1>
+) : (
+  <h1 className="text-xl text-center mb-2 text-red-500">{message}</h1>
+)}
+</>
+  )
+}
 
 <form action="" method="PUT">
            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-4">
@@ -182,7 +254,7 @@ const handleSubmit = async (e) => {
             </div>
             <div className="mb-6">
               <label className="block popupTextClr text-sm font-medium mb-2">
-              First Button Text
+             Description
               </label>
               <input
                 type="text"
@@ -246,59 +318,67 @@ const handleSubmit = async (e) => {
            <div>
   <div className="p-4">
       {/* File Input */}
-      <input
+{
+  images?.length >= 10 ?   <h1 className="text-red-300 mb-2 text-xl text-center">Only 10 Images are Allowed. Please Remove Some Images</h1>    : 
+   <input
         type="file"
         multiple
         accept="image/*"
         onChange={handleFileChange}
         className="mb-4"
       />
+}
 
       {/* Image Preview Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {images.map((img, index) => (
-          <div
-            key={index}
-            className="relative w-full h-52 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center"
-          >
-            <img
-              src={img.preview}
-              alt={`preview-${index}`}
-              className="w-full h-full object-cover"
-            />
-            <button
-              onClick={() => handleDelete(index)}
-              className="absolute cursor-pointer top-2 right-2 bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition"
-            >
-              <FaTrash />
-            </button>
-          </div>
-        ))}
-      </div>
+      <div className="grid-container">
+  {images.map((img, index) => (
+    <div
+      key={index}
+      className="relative w-full h-52 border border-gray-300 rounded-lg overflow-hidden flex items-center justify-center"
+    >
+      <img
+        src={img.preview}
+        alt={`preview-${index}`}
+        className="w-full h-full object-cover"
+      />
+      <button
+        onClick={() => handleDelete(index)}   // <-- save index to state
+        className="absolute cursor-pointer top-2 right-2 bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition"
+      >
+        <FaTrash />
+      </button>
+    </div>
+  ))}
+</div>
 
-      {/* Delete Confirmation Popup */}
-      {confirmDeleteIndex !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 sm:w-96">
-            <h2 className="text-lg font-semibold mb-4">Delete Image?</h2>
-            <p className="mb-4">Are you sure you want to delete this image?</p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={cancelDelete}
-                className="px-4 py-2 cursor-pointer border rounded-md border-gray-400 text-gray-600 hover:bg-gray-100 transition"
-              >
-                No
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="px-4 cursor-pointer py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
-              >
-                Yes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+{/* ✅ Popup moved OUTSIDE map */}
+{confirmDeleteIndex !== null && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 sm:w-96">
+      <h2 className="text-lg font-semibold text-gray-500 mb-4">Delete Image?</h2>
+      <p className="mb-4 text-gray-400">Are you sure you want to delete this image?</p>
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={cancelDelete}
+          className="px-4 py-2 cursor-pointer border rounded-md border-gray-400 text-gray-600 hover:bg-gray-100 transition"
+        >
+          No
+        </button>
+
+        {/* Now you can safely access the image using the stored index */}
+        <button
+          onClick={() => confirmDelete(images[confirmDeleteIndex].preview)}
+          className="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+        >
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+  
     </div>
            </div>
 

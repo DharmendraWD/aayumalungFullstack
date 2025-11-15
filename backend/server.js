@@ -32,6 +32,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // TO EXPOSE IMAGE WHICH IS IN UPLOADED FOLDER END
 
 
+// parse urlencoded bodies (for form-data)
+app.use(express.urlencoded({ extended: true }));
+
+
 // routes 
 app.use("/api/admin", userRoutes)
 app.use("/api/homepage", heroRoutes)

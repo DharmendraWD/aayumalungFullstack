@@ -1,15 +1,14 @@
 import { Hero } from "../../models/homepage/heroModel.js";
-import cloudinary from "../../config/cloudinary.js";
 import path from "path";
 import fs from "fs";
-import { ok } from "assert";
+
 
 
 
 
 export const getAllHeroesItems = async (req, res) => {
   try {
-    const hero = await Hero.find(); // assuming you have one hero section
+    const hero = await Hero.find();
     return res.status(200).json({ hero, ok: true });
   } catch (error) {
     console.error("Error fetching hero:", error);
@@ -41,7 +40,8 @@ export const updateHeroItem = async (req, res) => {
 
     // Merge new images with existing ones
     const totalImages = hero.images.length + imageUrls.length;
-    if (totalImages > 10) {
+
+    if (totalImages >10) {
       return res.status(400).json({ message: "Maximum 10 images allowed", ok: false });
     }
 
@@ -65,23 +65,22 @@ export const updateHeroItem = async (req, res) => {
 export const deleteImage = async (req, res) => {
   try {
     const { image } = req.body; // e.g., "/uploads/filename.jpg"
-    console.log("Requested image to delete:", image);
 
     // Build absolute path
     const filePath = path.join(process.cwd(), image.replace(/^\/+/, ''));
-    console.log("Deleting file at:", filePath);
+
 
     // Delete file from local folder
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     } else {
-      return res.status(404).json({ message: "Image file not found" });
+      return res.status(404).json({ message: "Image file not found", ok: false });
     }
 
     // Update hero document
     const hero = await Hero.findOne();
     if (!hero) {
-      return res.status(404).json({ message: "Hero not found" });
+      return res.status(404).json({ message: "Hero not found", ok: false });
     }
 
     hero.images = hero.images.filter(
@@ -90,9 +89,9 @@ export const deleteImage = async (req, res) => {
 
     await hero.save();
 
-    res.status(200).json({ message: "Image deleted successfully", hero });
+    res.status(200).json({ message: "Image deleted successfully", ok: true, hero });
   } catch (error) {
     console.error("Error deleting image:", error);
-    res.status(500).json({ message: "Failed to delete image" });
+    res.status(500).json({ message: "Failed to delete image", ok: false });
   }
 };

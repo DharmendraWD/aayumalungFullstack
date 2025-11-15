@@ -4,7 +4,8 @@
 const loading = () => {
   return (
 <>
-    <div className="absolute w-full bottom-0 left-0 bg-[#333333] h-1 rounded-t-xl">
+    <div className="w-full min-h-screen bg-black">
+      <div className="absolute w-full bottom-0 left-0 bg-[#333333] h-1 rounded-t-xl">
       <div className="w-[30%] bg-[#00e600] h-full animate-progressBar"></div>
     </div>
  
@@ -30,6 +31,7 @@ const loading = () => {
     <p>Appreciate your patience. Almost there!</p>
   </div>
 
+    </div>
 
 </>
 

@@ -76,7 +76,10 @@ export default function ChangePasswordClient({ email, otp }) {
 
         <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
+               <Link href={"/admin/login"}>
             <Image className="mx-auto w-auto" width={300} height={300} src={logo} alt="Company" />
+       
+           </Link>
             <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
               Reset Password
             </h2>
