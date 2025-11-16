@@ -52,7 +52,7 @@ const Navbar = () => {
                 <span className="text-white text-xs font-bold">A</span>
             </div>
             <span className="text-2xl font-bold text-gray-900">
-              AAYU <span className="text-orange-500">MALUNG</span>
+              AAYU <span className="text-orange-500">MALUN</span>
             </span>
           </Link>
 
