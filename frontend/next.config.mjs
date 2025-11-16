@@ -1,11 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['i.imgur.com'],
+    domains: ['i.imgur.com', 'randomuser.me'],
   },
-  /* config options here */
   reactCompiler: true,
 };
 
 export default nextConfig;
-
