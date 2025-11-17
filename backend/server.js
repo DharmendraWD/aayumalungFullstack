@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8000;
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://aayumalungfullstack-production.up.railway.app'
+  'https://aayumalun.vercel.app'
 ];
 
 app.use(cors({
