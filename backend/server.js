@@ -13,8 +13,8 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 const allowedOrigins = [
+  'https://aayumalun.vercel.app',
   'http://localhost:3000',
-  'https://aayumalun.vercel.app'
 ];
 
 app.use(cors({
@@ -55,5 +55,5 @@ app.use("/api/homepage", heroRoutes)
 
 app.listen(PORT, () => {
     connectDB();
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on ports ${PORT}`);
 });
