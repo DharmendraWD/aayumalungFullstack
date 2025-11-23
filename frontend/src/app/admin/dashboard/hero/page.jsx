@@ -24,7 +24,7 @@ const hero = async () => {
     }
 
 
-    console.log(HeroData?.hero?.[0]?.images);
+
 
     return (
 

@@ -1,9 +1,10 @@
 "use client";
+import Image from "next/image";
 import img1 from "../../../../public/img/people/1.png"
 import img2 from "../../../../public/img/people/2.png"
 import img3 from "../../../../public/img/people/3.png"
 import img4 from "../../../../public/img/people/4.png"
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -52,6 +53,25 @@ const responsive = {
 };
 
 const TeamCarousel = () => {
+const [data, setdata] = useState({ team: [] })
+let BASE_CONTENT = process.env.NEXT_PUBLIC_BASE_CONTENT
+
+const getData = async () => {
+  try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/homepage/team`)
+  const data = await res.json()
+  setdata(data)
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+useEffect(() => {
+  getData()
+}, [])
+
+
   return (
     <div className="team-section max-w-[1440px] mx-auto" id="about-teams">
       <div className="team-header flex lg:flex-row gap-8 items-start max-w-[100%] w-full flex-col">
@@ -72,12 +92,12 @@ const TeamCarousel = () => {
         arrows={false}
 
       >
-        {teamMembers.map((member, index) => (
+        {data?.team.map((member, index) => (
           <div className="team-card" key={index}>
-            <img src={member.img.src} alt={member.name} className="team-img" />
+            <img  src={`${BASE_CONTENT}/${member.image.replace(/\\/g, '/')}`}  className="team-img" />
 
-            <h3>{member.name}</h3>
-            <h4>{member.title}</h4>
+            <h3 className="font-semibold">{member.title}</h3>
+            <h4>{member.desig}</h4>
             <p>{member.desc}</p>
           </div>
         ))}

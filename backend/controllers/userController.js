@@ -163,7 +163,7 @@ export const loginUser = async (req, res) => {
     user.isLoggedIn = true;
     await user.save();
 
-    // ✅ Set cookies
+    //  Set cookies
         res.cookie('email', user.email, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -203,17 +203,49 @@ export const loginUser = async (req, res) => {
 
 
 
-// logout user 
-  export const logoutUser = async (req, res) => {
-    try {
-      const userId = req.userId.id.toString('hex');
-        await Session.deleteMany({ userId });
-        await User.findByIdAndUpdate(userId, { isLoggedIn: false });
-return res.status(200).json({ message: "Logout successful" });
-    } catch (error) {
-      res.status(500).json({ message: error.message, "yjy":"gdfd" });
+
+export const logoutUser = async (req, res) => {
+  try {
+    // 1. Get token from cookies OR Authorization header
+    const token =
+      req.cookies?.accessToken ||
+      req.headers.authorization?.split(" ")[1];
+
+      console.log(token)
+    if (!token) {
+      return res.status(401).json({ message: "No token found. Already logged out." });
     }
-  };
+
+    // 2. Decode token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
+    const userId = decoded.id; // JWT payload { id: user._id }
+console.log(userId)
+    // 3. Delete sessions
+    await Session.deleteMany({ userId });
+
+    // 4. Update user status
+    await User.findByIdAndUpdate(userId, { isLoggedIn: false });
+
+    // 5. Clear cookies
+    res.clearCookie("accessToken");
+    res.clearCookie("email");
+    res.clearCookie("username");
+
+    // 6. Return response
+    return res.status(200).json({ message: "Logout successful" });
+
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 
 
   // forgot pasword 
@@ -281,7 +313,7 @@ export const changePassword = async (req, res) => {
     const { newPassword, confirmPassword, oldPassword } = req.body;
     const { email } = req.params;
 
-    // 1️ Validate input
+    //  Validate input
     if (!newPassword || !confirmPassword || !oldPassword) {
       return res.status(400).json({ message: "All fields are required.", success: false });
     }
@@ -290,19 +322,19 @@ export const changePassword = async (req, res) => {
       return res.status(400).json({ message: "Passwords do not match.", success: false });
     }
 
-    // 2️ Find user
+    //  Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found.", success: false });
     }
 
-    // 3️ Check old password validity
+    //  Check old password validity
     const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
     if (!isOldPasswordCorrect) {
       return res.status(400).json({ message: "Old password is incorrect.", success: false });
     }
 
-    // 4️Prevent reusing the same password
+    // Prevent reusing the same password
     const isSamePassword = await bcrypt.compare(newPassword, user.password);
     if (isSamePassword) {
       return res.status(400).json({
@@ -329,7 +361,7 @@ export const resetPassword = async (req, res) => {
     const { newPassword, confirmPassword, otp } = req.body;
     const { email } = req.params;
 
-    // 1️ Validate input
+    // 1 Validate input
     if (!newPassword || !confirmPassword) {
       return res.status(400).json({ message: "All fields are required.", success: false });
     }
@@ -338,13 +370,13 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Passwords do not match.", success: false });
     }
 
-    // 2️ Find user
+    //  Find user
     const user = await User.findOne({ otp });
     if (!user) {
       return res.status(404).json({ message: "User not found. or otp expired", success: false });
     }
 
-    // 3️Hash new password and save
+    // Hash new password and save
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     user.otp = null;

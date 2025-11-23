@@ -8,28 +8,49 @@ import gl5 from "../../../../public/img/gallary/5.png"
 import gl6 from "../../../../public/img/gallary/6.png"
 import H1 from '@/components/Heading/H1';
 
-/**
- * MOCK GALLERY DATA (Integrated locally)
- */
-const galleryImages = [
-  { id: 1, src: gl1, alt: 'Boudhanath Stupa, Kathmandu' }, // Will be wider (3 units)
-  { id: 2, src: gl2, alt: 'Hanuman Dhoka Palace, Kathmandu' }, // Narrow (1 unit)
-  { id: 3, src: gl3, alt: 'Parliament House, Kathmandu' }, // Narrow (1 unit)
-  { id: 4, src: gl4, alt: 'Sunset over Karnali Bridge' }, // Will be wider (3 units)
+
+const CustomGallery = async() => {
+const BASE_API = process.env.BASE_API;
+  const BASE_CONTENT = process.env.BASE_CONTENT;
+  let Data = [];
+  let error = null;
   
-  { id: 5, src: gl5, alt: 'Dharan Clock Tower' },
-  { id: 6, src: gl6, alt: 'Boats on Begnas Lake, Pokhara' },
+  try {
+    const response = await fetch(`${BASE_API}/homepage/gallary`, {
+    });
+    
+    
+    if (!response.ok) {
+      error = "Something went wrong.";
+      throw new Error('Failed to fetch data');
+    }
+    Data = await response.json();
+        
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      
+      
 
 
-]
 
-const CustomGallery = () => {
+  const galleryImages = [
+    { id: 1, src: gl1, alt: 'Boudhanath Stupa, Kathmandu' }, // Will be wider (3 units)
+    { id: 2, src: gl2, alt: 'Hanuman Dhoka Palace, Kathmandu' }, // Narrow (1 unit)
+    { id: 3, src: gl3, alt: 'Parliament House, Kathmandu' }, // Narrow (1 unit)
+    { id: 4, src: gl4, alt: 'Sunset over Karnali Bridge' }, // Will be wider (3 units)
+    
+    { id: 5, src: gl5, alt: 'Dharan Clock Tower' },
+    { id: 6, src: gl6, alt: 'Boats on Begnas Lake, Pokhara' },
+  
+  ]
   return (
     <>
     <div id='gallery'>
     <H1 label="Gallery"></H1>
   <div className="grid grid-cols-1 sm:grid-cols-4 max-w-[1440px]  mx-auto auto-rows-[300px] sm:auto-rows-[350px]">
-      {galleryImages.map((image, index) => {
+      {Data?.gallary[0].images.map((image, index) => {
         let colSpan = 'col-span-1';
 
         if (index === 0 || index === 5) colSpan = 'sm:col-span-2'; // first and last images
@@ -38,14 +59,16 @@ const CustomGallery = () => {
 
         return (
           <div
-            key={image.id}
+            key={index}
             className={`${colSpan}  relative rounded-lg group h-full w-full overflow-hidden`}
           >
             <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              width={300}
+              height={300}
+              src={BASE_CONTENT+image}
+              alt={"ksm"}
+unoptimized
+              className="object-cover w-full transition-transform duration-300 group-hover:scale-105"
             />
           </div>
         );

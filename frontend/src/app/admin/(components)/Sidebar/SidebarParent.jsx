@@ -4,11 +4,10 @@ import SidebarMenu from './Sidebar';
 
 
 
-export default async function Page() {
+export default async function SidebarParent() {
 
 
  const cookieStore = await cookies(); 
-
 
 const accessToken = cookieStore.get('accessToken')?.value; 
 const email = cookieStore.get('email')?.value; 
@@ -21,7 +20,7 @@ return (
           accessToken={accessToken} 
           email={email} 
           username={username} 
-      />
+      /> 
 
 </>
  );

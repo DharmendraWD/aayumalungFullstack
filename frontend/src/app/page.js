@@ -28,6 +28,10 @@ export default function Home() {
 <TeamCard></TeamCard>
 <CustomGallery/>
 <NewsAndCaseStudy></NewsAndCaseStudy>
+    <ContactForm></ContactForm>
+    <FAQSection></FAQSection>
+    <FooterHero></FooterHero>
+    <Footer></Footer>
 
 
 {/* 
@@ -37,8 +41,6 @@ export default function Home() {
 {/* <TestimonialSlider></TestimonialSlider> */}
 {/* <ClientMapSection></ClientMapSection> */}
 {/* <TeamProfile></TeamProfile> */}
-<ContactForm></ContactForm>
-<FAQSection></FAQSection>
     </div>
   );
 }

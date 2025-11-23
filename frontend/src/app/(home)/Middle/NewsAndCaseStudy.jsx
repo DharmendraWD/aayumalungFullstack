@@ -1,59 +1,42 @@
 
-"use client";
 import img1 from "../../../../public/img/hpower1.jpg"
 import img2 from "../../../../public/img/hpower2.jpg"
 import img3 from "../../../../public/img/hydroportrait.jpg"
 import Image from "next/image";
 import Link from "next/link";
 
-// Sample data for the cards
-const CASE_STUDIES = [
-    {
-        id: 1,
-        title: "How I improved Landsum onboarding experience",
-        summary: "I redesigned Landsum's onboarding process to create a more seamless experience for new users, improving retention rates...",
-        img: img1,
-    },
-    {
-        id: 2,
-        title: "Helping Lorify to add new features that will attract millenials",
-        summary: "I collaborated with Lorify to implement new features tailored for millenials, significantly enhancing platform engagement...",
-        img: img2,
-    },
-    {
-        id: 3,
-        title: "Identifying cost saving opportunities for KM Ipsum",
-        summary: "I conducted a comprehensive analysis for KM Ipsum to identify cost-saving opportunities, enhancing their overall efficiency...",
-        img:img3,
-    },
-];
+
 
 // Individual Card Component
 const CaseStudyCard = ({ study }) => {
+  let BASE_CONTENT = process.env.BASE_CONTENT
     return (
         <div className="bg-white rounded-2xl rounded-br-[95px] shadow-xl transition-all duration-300 hover:shadow-2xl overflow-hidden flex flex-col h-full">
             {/* Image Container */}
             <div className="w-full h-auto overflow-hidden p-4">
                 <Image
-                width={800}
-                height={800}
-                    src={study.img}
+                width={300}
+                height={300}
+            // <img  src={`${BASE_CONTENT}/${member.image.replace(/\\/g, '/')}`}  className="team-img" />
+
+                   src={`${BASE_CONTENT}/${study.image.replace(/\\/g, '/')}`}
                     alt={study.title}
-                    className="w-full h-full object-cover transition duration-500 ease-in-out hover:scale-[1.03]"
-                    // Fallback placeholder image on error
-                    onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/800x500/94A3B8/FFFFFF?text=Image+Missing" }}
+                    className="w-[100%] h-[200px] object-cover transition duration-500 ease-in-out hover:scale-[1.03]"
+                    // Fallback placeholder image on error\
+                    unoptimized
+                   
                 />
             </div>
             
             {/* Content Area */}
             <div className="p-6 flex flex-col flex-grow">
                 <h3 className="text-2xl font-semibold text-gray-800 leading-snug mb-3">
-                    {study.title}
+                   {study.title}
                 </h3>
-                <p className="text-base text-gray-600 mb-4 flex-grow">
-                    {study.summary}
+                <p className="text-base multiline-ellipsis text-gray-600 mb-4 flex-grow">
+                    {study.desc}
                 </p>
-                <Link href={`/news/${study.id}`} className="text-blue-600 font-medium hover:text-blue-700 transition duration-150 self-start">
+                <Link href={`/blog/${study._id}`} className="text-blue-600 font-medium hover:text-blue-700 transition duration-150 self-start">
                     Read more
                 </Link>
             </div>
@@ -62,7 +45,30 @@ const CaseStudyCard = ({ study }) => {
 };
 
 // Main App Component
-export default function NewsAndCaseStudy() {
+export default async function  NewsAndCaseStudy() {
+
+const BASE_API = process.env.BASE_API;
+  let Data = [];
+  let error = null;
+  
+  try {
+    const response = await fetch(`${BASE_API}/homepage/blog`, {
+    });
+    
+    
+    if (!response.ok) {
+      error = "Something went wrong.";
+      throw new Error('Failed to fetch data');
+    }
+    Data = await response.json();
+        
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      
+      
+
   return (
     <div className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 font-[Inter]">
       <div className="max-w-7xl mx-auto">
@@ -74,8 +80,8 @@ export default function NewsAndCaseStudy() {
 
         {/* Responsive Grid Container */}
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
-          {CASE_STUDIES.map(study => (
-            <CaseStudyCard key={study.id} study={study} />
+          {Data?.blog?.splice(0, 3).map(study => (
+            <CaseStudyCard key={study._id} study={study} />
           ))}
         </div>
         

@@ -4,11 +4,13 @@
 import { FaGithub, FaTwitter, FaEnvelope, FaExternalLinkAlt } from 'react-icons/fa'; 
 import adminimg from "../../../../public/img/admin.svg"
 import { cookies } from 'next/headers';
-
+import aayusLogo  from "../../../../public/img/logof.png"
+import aayumLogo  from "../../../../public/img/wp1.jpg"
 
 import Link from 'next/link'; 
 import { FaHome, FaUsers, FaCog, FaChartLine, FaLayerGroup, FaQuestion, FaInfo, FaBullhorn, FaMap, FaImages, FaBuilding, FaNewspaper } from 'react-icons/fa';
 import { IoIosArrowDown, IoMdSettings, IoMdCreate, IoMdImages, IoMdLink } from 'react-icons/io';
+import Image from 'next/image';
 
 
 const DASHBOARD_SECTIONS = [
@@ -239,46 +241,69 @@ const username = cookieStore.get('username')?.value;
         </p>
 
         
-        <div className="flex flex-wrap gap-4 mb-16">
-         
-          <Link
-            href="https://github.com/your-repo-link" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-colors duration-200 text-sm sm:text-base"
-          >
-            <FaGithub className="mr-2" /> Project repository <FaExternalLinkAlt className="ml-2 text-xs" />
-          </Link>
-
-          
-          <Link
-            href="https://twitter.com/your-twitter-handle" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-colors duration-200 text-sm sm:text-base"
-          >
-            <FaTwitter className="mr-2" /> Our twitter <FaExternalLinkAlt className="ml-2 text-xs" />
-          </Link>
-
-        
-          <Link
-            href="/development-team" 
-            className="flex items-center bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-colors duration-200 text-sm sm:text-base"
-          >
-            Development team <FaExternalLinkAlt className="ml-2 text-xs" />
-          </Link>
-        </div>
-
       
-        <div className="text-base sm:text-lg text-gray-300 mb-16">
-          Go to:{" "}
-          <Link
-            href={BASE_CONTENT}
-            className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200 inline-flex items-center"
-          >
-            Aayumalun <FaExternalLinkAlt className="ml-2 text-xs" />
-          </Link>
-        </div>
+
+<div className='flex flex-col lg:flex-row just justify-start items-center gap-8'>
+
+        <div
+  id="toast-notification"
+  className="w-full max-w-xs p-4 text-gray-900 bg-[#152035] rounded-lg shadow dark:bg-gray-800 dark:text-gray-300"
+  role="alert"
+>
+
+  <div className="flex items-center">
+    <div className="relative inline-block shrink-0">
+      <div
+        className="w-12 h-12 rounded-full overflow-hidden bg-green-600 flex items-center justify-center text-white font-bold text-xl"
+      >
+        <Image src={aayumLogo} width={200} height={200} alt="" className='h-full w-full'/>
+      </div>
+ 
+    </div>
+    <div className="ms-3 text-sm font-normal">
+      <div className="text-sm font-semibold text-gray-400 dark:text-white">
+        Developed and Maintained by
+      </div>
+      <Link href={"#"} className="text-sm font-normal flex items-center text-blue-300 dark:text-gray-400">Aayusoft Tech  
+            <FaExternalLinkAlt className="ml-2 text-xs" />
+      
+      </Link>
+  
+    </div>
+  </div>
+</div>
+
+{/* 22222222 */}
+        
+        <div
+  id="toast-notification"
+  className="w-full max-w-xs p-4 text-gray-900 bg-[#152035] rounded-lg shadow dark:bg-gray-800 dark:text-gray-300"
+  role="alert"
+>
+
+  <div className="flex items-center">
+    <div className="relative inline-block shrink-0">
+      <div
+        className="w-12 h-12 rounded-full overflow-hidden bg-green-600 flex items-center justify-center text-white font-bold text-xl"
+      >
+        <Image src={aayumLogo} width={200} height={200} alt="" className='h-full w-full'/>
+      </div>
+ 
+    </div>
+    <div className="ms-3 text-sm font-normal">
+      <div className="text-sm font-semibold text-gray-400 dark:text-white">
+       Visit Aayumalun
+      </div>
+      <Link href={BASE_CONTENT} className="text-sm font-normal flex items-center text-blue-300 dark:text-gray-400">Aayumalung 
+            <FaExternalLinkAlt className="ml-2 text-xs" />
+      
+      </Link>
+  
+    </div>
+  </div>
+</div>
+     </div>   
+
 
         <div className="mt-[100px]"> 
           <img

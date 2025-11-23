@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const isAuthenticated = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization ;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -16,8 +16,8 @@ export const isAuthenticated = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Check decoded content
- console.log("User model:", User);
-console.log("Decoded data:", decoded);
+//  console.log("User model:", User);
+// console.log("Decoded data:", decoded);
 
     if (!decoded?.id) {
       return res.status(401).json({ message: "Token Doesnt Exist." });

@@ -256,7 +256,7 @@ const handleImageDelete = async (delPath) => {
               <label className="block popupTextClr text-sm font-medium mb-2">
              Description
               </label>
-              <input
+              <textarea
                 type="text"
                 value={desc}
                 onChange={(e) => setdesc(e.target.value)}
@@ -319,7 +319,7 @@ const handleImageDelete = async (delPath) => {
   <div className="p-4">
       {/* File Input */}
 {
-  images?.length >= 10 ?   <h1 className="text-red-300 mb-2 text-xl text-center">Only 10 Images are Allowed. Please Remove Some Images</h1>    : 
+  images?.length >= 6 ?   <h1 className="text-red-300 mb-2 text-xl text-center">Only 6 Images are Allowed. Please Remove Some Images</h1>    : 
    <input
         type="file"
         multiple

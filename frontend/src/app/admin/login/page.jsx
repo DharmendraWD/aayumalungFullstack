@@ -8,7 +8,7 @@ import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { AiOutlineEye } from "react-icons/ai";
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
-import Cookies from 'js-cookie';
+
 
 const page = () => {
 
@@ -41,7 +41,7 @@ const handleSubmit = async (e) => {
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message || 'Login failed');
-
+      setLoading(false);
       toast.success('Login successful! Redirecting...');
       setTimeout(() => router.push('/admin/dashboard'), 1000);
     }catch (err) {
@@ -136,10 +136,18 @@ const handleSubmit = async (e) => {
                     </div>
 
                     <div>
-                        <button type="submit"
-                        onClick={handleSubmit}
-                                className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign
-                                in</button>
+                      <button
+  type="submit"
+  onClick={handleSubmit}
+  disabled={loading}
+  className={`flex cursor-pointer w-full justify-center rounded-md border border-transparent 
+    ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} 
+    py-2 px-4 text-sm font-medium text-white shadow-sm 
+    focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+>
+  {loading ? 'Loading...' : 'Sign in'}
+</button>
+
                     </div>
                 </form>
 

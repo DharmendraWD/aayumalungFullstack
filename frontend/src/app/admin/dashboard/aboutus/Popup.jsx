@@ -2,11 +2,15 @@
 import Loading from "../../loading";
 
 import { useState } from "react";
-import { FaTimes } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+
 
 import { FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function PopupModal({aboutusData}) {
+const router = useRouter()
+
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -155,18 +159,23 @@ formData.append("capacity.description", capacityDesc);
       if (response.ok) {
         setisloading(false);
         setMessage(`Success: ${result.message}`);
-        setHideMessageInterval(false);
-
+        toast.success("Added successfully");
+        setIsOpen(false);
+        
         setTimeout(() => {
+          setHideMessageInterval(false);
           setHideMessageInterval(true);
-        }, 3000);
+          router.refresh()
+        }, 4000);
         // Optionally update the images state with the new paths from the successful response
       } else {
+        toast.error("Failed to submit form");
         setisloading(false);
         setMessage(`Error: ${result.message || "Failed to submit form"}`);
         console.error("API Error:", result);
       }
     } catch (error) {
+      toast.error("Failed to submit form");
       setisloading(false);
       setMessage("Connection error. Check console for details.");
       console.error("Error submitting form:", error);
@@ -191,16 +200,21 @@ const handleImageDelete = async (delPath) => {
       setisloading(false);
       setMessage(`Success: ${result.message}`);
              setHideMessageInterval(false);
+             toast.success("Image deleted successfully");
 
+             setIsOpen(false);
         setTimeout(() => {
+          router.refresh()
           setHideMessageInterval(true);
         }, 3000);
     } else {
       setisloading(false);
+      toast.error("Failed to delete image");
       setMessage(`Error: ${result.message || "Failed to delete image"}`);
       console.error("API Error:", result);
     }
   } catch (error) {
+    toast.error("Failed to delete image");
     setisloading(false);
     setMessage("Connection error. Check console for details.");
     console.error(error);
@@ -425,7 +439,7 @@ const handleImageDelete = async (delPath) => {
   <div className="p-4">
       {/* File Input */}
 {
-  images?.length >= 2 ?   <h1 className="text-red-300 mb-2 text-xl text-center">Only 2 Images are Allowed.</h1>    : 
+  images?.length === 2 ?   <h1 className="text-red-300 mb-2 text-xl text-center">Only 2 Images are Allowed.</h1>    : 
    <input
         type="file"
         multiple

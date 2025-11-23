@@ -4,31 +4,33 @@ import Head from 'next/head';
 import RoundedBgBtn from '@/components/Buttons/RoundedBgBtn';
 import RoundedNotBGBtn from '@/components/Buttons/RoundedNotBGBtn';
 
-// Dummy image paths (using abstract images for better visual testing)
-const imagePaths = {
-  img1: 'https://www.shutterstock.com/shutterstock/photos/2146982431/display_1500/stock-vector-simple-rectangular-tiled-frames-of-various-sizes-colored-in-shades-of-blue-geometric-shapes-2146982431.jpg', // Top-left B&W
-  img2: 'https://thumbs.dreamstime.com/b/d-rendering-low-poly-random-tiles-texture-white-color-abstract-geometric-pattern-background-medium-size-triangles-340818029.jpg',   // Top-right B&W
-  img3: 'https://cdn.vectorstock.com/i/500p/46/04/purple-blue-pink-random-sizes-low-poly-background-vector-15064604.jpg', // Middle-right B&W/Abstract
-  img4: 'https://media.istockphoto.com/id/1073416084/photo/shocked-young-woman-looking-at-laptop-screen.jpg?s=612x612&w=0&k=20&c=_2OwVoe5iwNnKWGg6auirOs5i5G7gVra69hq_OfYrR0=',  // Bottom-left color
-  img5: 'https://media.istockphoto.com/id/667138552/photo/portrait-of-a-woman-working-online-at-home.jpg?s=170667a&w=0&k=20&c=HCSYdeBgMpqB_ealarmN4V2ZBUQHIaKYyjOhjAjxGyQ=',// Bottom-right color
-};
 
-// Component that renders a single set of the image grid
-const ImageGridContent = () => (
-    <div className="grid grid-cols-2 grid-rows-3 gap-3 p-4 md:p-6 lg:p-8">
-        {/* ... (Image elements are unchanged) ... */}
+const ImageGridContent = async ({HeroData, BASE_CONTENT, BASE_API}) => {
+  
+  
+  const imagePaths = {
+    img1: BASE_CONTENT+HeroData?.hero?.[0]?.images?.[0], 
+    img2: BASE_CONTENT+HeroData?.hero?.[0]?.images?.[1],
+    img3: BASE_CONTENT+HeroData?.hero?.[0]?.images?.[2],
+    img4: BASE_CONTENT+HeroData?.hero?.[0]?.images?.[3],
+    img5: BASE_CONTENT+HeroData?.hero?.[0]?.images?.[4],
+    img6: BASE_CONTENT+HeroData?.hero?.[0]?.images?.[5]
+  };
+  
+return (
+  <div className="grid grid-cols-2 grid-rows-3 gap-3 p-4 md:p-6 lg:p-8">
+           {/* ... (Image elements are unchanged) ... */}
         {/* Image 1: Top Left - Span two rows */}
-        <div className="row-span-2 aspect-[4/5] overflow-hidden rounded-xl shadow-2xl">
-            <img src={imagePaths.img1} alt="Modern steel architecture" className="w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"/>
+        <div className="row-span-1 aspect-[4/5] overflow-hidden rounded-xl shadow-2xl">
+            <img src={imagePaths.img5} alt="Modern steel architecture" className="w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"/>
         </div>
 
-        {/* Image 2: Top Right - Span one row */}
-        <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-2xl">
+        <div className="col-span-1 aspect-square overflow-hidden rounded-xl shadow-2xl">
             <img src={imagePaths.img2} alt="Top view of a clean building" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
         </div>
 
         {/* Image 3: Middle Right - Span one row */}
-        <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-2xl">
+        <div className="aspect-[4/4] overflow-hidden rounded-xl shadow-2xl">
             <img src={imagePaths.img3} alt="Curving structural abstract" className="w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"/>
         </div>
         
@@ -39,11 +41,16 @@ const ImageGridContent = () => (
         <div className="col-span-1 aspect-square overflow-hidden rounded-xl shadow-2xl">
             <img src={imagePaths.img5} alt="Skyline with architectural blocks" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
         </div>
+        <div className="">
+            <img src={imagePaths.img6} alt="Skyline with architectural blocks" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
+        </div>
+   
     </div>
-);
+)
+}
 
 
-const ScrollingImageGrid = () => {
+const ScrollingImageGrid = ({HeroData, BASE_CONTENT, BASE_API}) => {
   const copies = 3; 
 
   return (
@@ -62,7 +69,7 @@ const ScrollingImageGrid = () => {
         
         {/* Duplicate the single grid content N times */}
         {[...Array(copies)].map((_, idx) => (
-          <ImageGridContent key={idx} />
+          <ImageGridContent key={idx} HeroData={HeroData} BASE_CONTENT={BASE_CONTENT} BASE_API={BASE_API}/>
         ))}
 
       </div>
@@ -76,11 +83,35 @@ const ScrollingImageGrid = () => {
 };
 
 // Main Hero Section Component
-const Home1 = () => {
+const Home1 = async() => {
+
+    const BASE_API = process.env.BASE_API;
+    const BASE_CONTENT = process.env.BASE_CONTENT;
+    let HeroData = [];
+    let error = null;
+    
+    try {
+        const response = await fetch(`${BASE_API}/homepage/hero`, {
+        });
+
+        
+        if (!response.ok) {
+          error = "Something went wrong.";
+          throw new Error('Failed to fetch data');
+        }
+        HeroData = await response.json();
+
+ 
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+
+      
+
   return (
     <>
       <Head>
-        <title>Building Spaces with Strength and Precision</title>
+        <title>{HeroData?.hero?.[0]?.title}</title>
       </Head>
       
       <section className="bg-white  pt-12 md:pt-20 lg:pt-24 max-w-[1400px] mx-auto">
@@ -88,26 +119,23 @@ const Home1 = () => {
         <div className="container mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col justify-center py-8 lg:py-0">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-gray-900 leading-tight">
-              Building Spaces <br />
-              with <span className="text-blue-600">Strength</span> <br />
-              and <span className="text-blue-600">Precision</span>.
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-blue-600 leading-tight">
+            {HeroData?.hero?.[0]?.title}
+             
             </h1>
 
             <p className="mt-8 text-lg sm:text-xl text-gray-600 max-w-lg">
-              We don’t just construct buildings — we create spaces that inspire 
-              confidence, stand strong against time, and bring real value to the 
-              people who live and work in them.
+             {HeroData?.hero?.[0]?.description}
             </p>
 
             <div className="mt-10 md:flex-row md:gap-1 gap-[10px] flex-col flex space-x-4">
-          <RoundedBgBtn label="Get Started"></RoundedBgBtn>
-            <RoundedNotBGBtn label="See Our Projects"></RoundedNotBGBtn>
+          <RoundedBgBtn label={HeroData?.hero?.[0]?.button1Text}></RoundedBgBtn>
+            <RoundedNotBGBtn label={HeroData?.hero?.[0]?.button2Text}></RoundedNotBGBtn>
             </div>
           </div>
           
           <div className="lg:h-full lg:min-h-[700px]">
-            <ScrollingImageGrid />
+            <ScrollingImageGrid HeroData={HeroData} BASE_CONTENT={BASE_CONTENT} BASE_API={BASE_API}/>
           </div>
         </div>
         

@@ -34,6 +34,9 @@ app.use(cors({
 
 // middleware 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
+
 
 // TO EXPOSE IMAGE WHICH IS IN UPLOADED FOLDER START 
 // Get __dirname in ES module
@@ -45,7 +48,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 // parse urlencoded bodies (for form-data)
-app.use(express.urlencoded({ extended: true }));
 
 
 // routes 

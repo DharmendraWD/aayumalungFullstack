@@ -7,7 +7,12 @@
 .popupTextClr{
   color: #d3d7df;
 }
-
+.multiline-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 @keyframes slideDown {
   0% {
@@ -39,6 +44,7 @@
 
 /* Base Styles (for screens smaller than 640px) */
 .grid-container {
+  justify-content: center;
   display: grid;
   grid-template-columns:(1, 1fr, 1fr minmax(200px, 1fr)); /* 1 column */
   gap: 1rem; /* 16px gap */
