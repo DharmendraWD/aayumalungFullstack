@@ -129,6 +129,7 @@ const handleSubmit = async (e) => {
         setMessage(`Success: ${result.message}`);
 
  toast.success("Form submitted successfully");
+ setIsOpen(false);
       } else {
         setisloading(false);
         setMessage(`Error: ${result.message || "Failed to submit form"}`);
@@ -244,7 +245,7 @@ const handleImageDelete = async (delPath) => {
               </label>
               <input
                 type="text"
-                value={title}
+                value={title || ""}
                 onChange={(e) => settitle(e.target.value)}
                 placeholder="Type your name..."
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"

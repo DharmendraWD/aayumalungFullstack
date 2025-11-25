@@ -8,10 +8,11 @@ import { deleteMissionImage, getAllMissions, updateMission } from "../controller
 import { addTeamMember, deleteTeamMember, getAllTeamItems } from "../controllers/team/teamController.js";
 import { singleUpload } from "../middleware/singleUpload.js";
 import { deleteGallaryImage, getAllGallaryItems, updateGallaryItem } from "../controllers/gallary/gallaryController.js";
-import { addBlog, deleteBlog, getAllBlogItems, getOneBlogItems } from "../controllers/blog/blogController.js";
+import { addBlog, deleteBlog, getAllBlogItems } from "../controllers/blog/blogController.js";
 import { addClientMessage, deleteClientMessage, getAllClientMessages } from "../controllers/clientMessage/cMessageController.js";
 import { getAllFooterItems, updateFooterItem } from "../controllers/footerInfo/footerInfoController.js";
 import { addFAQ, deleteFaq, getallfaq } from "../controllers/faq/faqController.js";
+import { getsingleBlog } from "../controllers/blog/blogController.js";
 
 const router = express.Router();
 // HERO 
@@ -57,7 +58,7 @@ router.delete("/gallary", deleteGallaryImage);
 router.get("/blog", getAllBlogItems);
 router.post("/blog",singleUpload.single("image"), addBlog);
 router.delete("/blog",deleteBlog);
-router.get("/singleBlog/:blogId", getOneBlogItems);
+router.get("/singleBlog/:blogId", getsingleBlog);
 // BLOG END
 
 

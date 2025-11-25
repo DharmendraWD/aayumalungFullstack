@@ -43,11 +43,10 @@ const res = await fetch(`${process.env.BASE_API}/homepage/singleBlog/${id}`);
         throw new Error("Failed to fetch data");
       }
     const data = await res.json();
-
-    blog = data?.blog?.[0]
+    blog = data?.blog
     
 } catch (error) {
-    throw new Error("Failed to fetch data");
+    // throw new Error("Failed to fetch data m ");
 }
     
 
@@ -69,6 +68,7 @@ let blogsss = [];
 
 const BASE_CONTENT = process.env.BASE_CONTENT
 
+// console.log(`${process.env.BASE_API}/homepage/singleBlog/${id}`)
 
     const backgroundImage = wp.src;
 
@@ -94,11 +94,11 @@ const BASE_CONTENT = process.env.BASE_CONTENT
                 {/* Main Text Content */}
                 <div className="text-center flex flex-col justify-around mb-12">
                     <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight max-w-4xl mx-auto">
-                        {blog?.title}
+                        {blog?.title ?? " "}
                     </h1>
                     <div className="mt-4 multiline-ellipsis2 text-lg text-gray-200 max-w-3xl mx-auto px-4 sm:px-0">
                     
-                     {HTMLReactParser(blog?.desc)} 
+                     {HTMLReactParser(blog?.desc || "")}
           
                     </div>
                 </div>
@@ -156,7 +156,7 @@ const BASE_CONTENT = process.env.BASE_CONTENT
             // <img  src={`${BASE_CONTENT}/${member.image.replace(/\\/g, '/')}`}  className="team-img" />
 
                    src={`${BASE_CONTENT}/${blog.image.replace(/\\/g, '/')}`}
-                    alt={blog.title}
+                    alt={blog.title ?? " "}
                     className="w-[100%] h-[200px] object-cover transition duration-500 ease-in-out hover:scale-[1.03]"
                     // Fallback placeholder image on error\
                     unoptimized
@@ -167,7 +167,7 @@ const BASE_CONTENT = process.env.BASE_CONTENT
             {/* Content Area */}
             <div className="p-6 flex flex-col flex-grow">
                 <h3 className="text-2xl font-semibold text-gray-800 leading-snug mb-3">
-                   {blog.title}
+                   {blog.title ?? " "}
                 </h3>
                 <div className="text-base multiline-ellipsis text-gray-600 mb-4 flex-grow">
                      {HTMLReactParser(blog?.desc)} 
@@ -222,11 +222,11 @@ const NewsStudy = async({blog}) => {
         <div className="text-gray-700 leading-relaxed  space-y-8">
             <section>
                 <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-                  {blog.title}
+                  {blog?.title ?? " " }
                 </h2>
                 <div className="text-lg">
                  
-                     {HTMLReactParser(blog?.desc)} 
+                     {blog?.desc ? HTMLReactParser(blog.desc) : null}
           
                 </div>
             </section>

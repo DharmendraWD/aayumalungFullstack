@@ -56,23 +56,7 @@ const navigationLinks = [
 export default function Footer() {
 
 
-const [data, setdata] = useState([{
-  heading: "",
-  email: "",
-  desc: "",
-  phone: "",
-  map: "",
-  linkedin: "",
-  telegram: "",
-  x: "",
-  instagram: "",
-  youtube: "",
-  footerAboveHeading: "",
-  footerAboveDesc: "",
-  footerAboveBtnValue: "",
-  footerAboveBtnLink: "",
-  Copyrights: "",
-}])
+const [data, setdata] = useState([])
     const getData = async () => {
       try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/homepage/footer`)
@@ -88,15 +72,19 @@ const [data, setdata] = useState([{
       getData()
     }, [])
 
-  const socialLinks = [
-    { icon: FaInstagram, href: data?.[0].instagram, label: "Instagram" },
-    { icon: FaTwitter, href: data?.[0].x, label: "Twitter" },
-    { icon: FaTelegramPlane, href: data?.[0].telegram, label: "Telegram" },
-    { icon: FaYoutube, href:data?.[0].youtube, label: "YouTube" },
-  ];
+
+const socialLinks = [
+  { icon: FaInstagram, href: data?.length > 0 ? data[0].instagram : "", label: "Instagram" },
+  { icon: FaTwitter, href: data?.length > 0 ? data[0].x : "", label: "Twitter" },
+  { icon: FaTelegramPlane, href: data?.length > 0 ? data[0].telegram : "", label: "Telegram" },
+  { icon: FaYoutube, href: data?.length > 0 ? data[0].youtube : "", label: "YouTube" },
+];
+
   
     const position = [37.7749, -122.4194]; // your latitude/longitude
+
   return (
+  data.length >0 &&
     <footer className="bg-[#F9F9FF] pt-16 pb-8 md:pt-24 md:pb-12 ">
       <div className="container mx-auto px-4 max-w-[1440px relative">
         
@@ -112,7 +100,7 @@ const [data, setdata] = useState([{
               <ul className="space-y-4">
                 {section.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
-                    <Link href={link.href} className="text-gray-600 hover:text-primary1 transition-colors">
+                    <Link href={link.href ?? " "}  className="text-gray-600 hover:text-primary1 transition-colors">
                       {link.name}
                     </Link>
                   </li>
@@ -131,21 +119,21 @@ const [data, setdata] = useState([{
               
               <div className="flex items-start">
                 <MdEmail className="w-5 h-5 text-gray-500 mr-3 flex-shrink-0" />
-                <a href={`mailto:${data?.[0]?.email}`} className="text-gray-700 hover:text-primary1 transition-colors">
+                <a href={`mailto:${data?.[0]?.email}` ?? ""} className="text-gray-700 hover:text-primary1 transition-colors">
                   {data?.[0]?.email}
                 </a>
               </div>
               
               <div className="flex items-start">
                 <MdPhone className="w-5 h-5 text-gray-500 mr-3 flex-shrink-0" />
-                <a href={`tel:${data?.[0]?.phone + "kmza"}`} className="text-gray-700 hover:text-primary1 transition-colors">
+                <a href={`tel:${data?.[0]?.phone + "kmza"}` ?? ""} className="text-gray-700 hover:text-primary1 transition-colors">
                   {data?.[0]?.phone }
                 </a>
               </div>
 
               <div className="flex items-start">
                 <MdLocationOn className="w-5 h-5 text-gray-500 mr-3 flex-shrink-0" />
-                <Link href={data?.[0]?.map} className="text-gray-700">{data?.[0].map}</Link>
+                <Link href={data?.[0]?.map ?? " "} className="text-gray-700">{data?.[0].map}</Link>
               </div>
 
              
@@ -153,7 +141,7 @@ const [data, setdata] = useState([{
                 {socialLinks.map((social, index) => (
                   <a 
                     key={index}
-                    href={social.href} 
+                    href={social.href ?? " "} 
                     aria-label={social.label}
                     target="_blank" 
                     rel="noopener noreferrer"

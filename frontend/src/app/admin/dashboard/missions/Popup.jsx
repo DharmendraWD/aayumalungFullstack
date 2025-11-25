@@ -12,18 +12,18 @@ export default function PopupModal({missionData}) {
   const [isOpen, setIsOpen] = useState(false);
 
   // upper heading
-  const [upperHeading, setUpperHeading] = useState(missionData?.mission[0]?.upper?.title);
-  const [UperDesc, setUpperDesc] = useState(missionData?.mission[0]?.upper?.desc);
+  const [upperHeading, setUpperHeading] = useState(missionData?.mission[0]?.upper?.title ?? " ");
+  const [UperDesc, setUpperDesc] = useState(missionData?.mission[0]?.upper?.desc ?? " ");
 
   //mission 1
-  const [mission1Title, setMission1Title] = useState(missionData?.mission[0]?.box1?.title);
-  const [mission1Desc, setMission1Desc] = useState(missionData?.mission[0]?.box1?.desc);
+  const [mission1Title, setMission1Title] = useState(missionData?.mission[0]?.box1?.title ?? " ");
+  const [mission1Desc, setMission1Desc] = useState(missionData?.mission[0]?.box1?.desc ?? " ");
   // mission 2
-  const [mission2Title, setMission2Title] = useState(missionData?.mission[0]?.box2?.title);
-  const [mission2Desc, setMission2Desc] = useState(missionData?.mission[0]?.box2?.desc);
+  const [mission2Title, setMission2Title] = useState(missionData?.mission[0]?.box2?.title ?? " ");
+  const [mission2Desc, setMission2Desc] = useState(missionData?.mission[0]?.box2?.desc ?? " ");
   // mission 3
-  const [mission3Title, setMission3Title] = useState(missionData?.mission[0]?.box3?.title);
-  const [mission3Desc, setMission3Desc] = useState(missionData?.mission[0]?.box3?.desc);
+  const [mission3Title, setMission3Title] = useState(missionData?.mission[0]?.box3?.title ?? " ");
+  const [mission3Desc, setMission3Desc] = useState(missionData?.mission[0]?.box3?.desc ?? " ");
 
 
 

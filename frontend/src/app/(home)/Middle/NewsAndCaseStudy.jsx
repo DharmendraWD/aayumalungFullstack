@@ -4,6 +4,7 @@ import img2 from "../../../../public/img/hpower2.jpg"
 import img3 from "../../../../public/img/hydroportrait.jpg"
 import Image from "next/image";
 import Link from "next/link";
+import HTMLReactParser from 'html-react-parser';
 
 
 
@@ -33,9 +34,10 @@ const CaseStudyCard = ({ study }) => {
                 <h3 className="text-2xl font-semibold text-gray-800 leading-snug mb-3">
                    {study.title}
                 </h3>
-                <p className="text-base multiline-ellipsis text-gray-600 mb-4 flex-grow">
-                    {study.desc}
-                </p>
+                <div className="text-base multiline-ellipsis text-gray-600 mb-4 flex-grow">
+                                        {HTMLReactParser(study?.desc)} 
+
+                </div>
                 <Link href={`/blog/${study._id}`} className="text-blue-600 font-medium hover:text-blue-700 transition duration-150 self-start">
                     Read more
                 </Link>

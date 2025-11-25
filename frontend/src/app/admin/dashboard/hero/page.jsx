@@ -155,7 +155,7 @@ const hero = async () => {
           
               src={img.startsWith("http") ? img : `${BASE_CONTENT}${img}`}
               alt={`hero-image-${index}`}
-              className="w-full h-full object-cover rounded-md"
+              className="w-full h-[85%] object-cover rounded-md"
           
             />
               <p

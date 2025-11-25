@@ -66,11 +66,12 @@ export const getAllBlogItems = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch blog", ok: false });
   }
 };
-export const getOneBlogItems = async (req, res) => {
+export const getsingleBlog = async (req, res) => {
  const { blogId } = req.params;
 
   try {
-  const blog = await Blog.find({ _id: blogId }); 
+  // const blog = await Blog.find({ _id: blogId}); 
+  const blog = await Blog.findById(blogId);
     return res.status(200).json({ blog, ok: true });
   } catch (error) {
     console.error("Error fetching blog:", error);

@@ -22,27 +22,27 @@ return (
            {/* ... (Image elements are unchanged) ... */}
         {/* Image 1: Top Left - Span two rows */}
         <div className="row-span-1 aspect-[4/5] overflow-hidden rounded-xl shadow-2xl">
-            <img src={imagePaths.img5} alt="Modern steel architecture" className="w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"/>
+            <img src={imagePaths.img5} alt="Hero scrolling images" className="w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"/>
         </div>
 
         <div className="col-span-1 aspect-square overflow-hidden rounded-xl shadow-2xl">
-            <img src={imagePaths.img2} alt="Top view of a clean building" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
+            <img src={imagePaths.img2} alt="Hero scrolling images" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
         </div>
 
         {/* Image 3: Middle Right - Span one row */}
         <div className="aspect-[4/4] overflow-hidden rounded-xl shadow-2xl">
-            <img src={imagePaths.img3} alt="Curving structural abstract" className="w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"/>
+            <img src={imagePaths.img3} alt="Hero scrolling images" className="w-full h-full object-cover grayscale transition-transform duration-500 hover:scale-105"/>
         </div>
         
         {/* Image 4 & 5: Bottom Row - Full color */}
         <div className="col-span-1 aspect-square overflow-hidden rounded-xl shadow-2xl">
-            <img src={imagePaths.img4} alt="Pink and yellow minimalist building" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
+            <img src={imagePaths.img4} alt="Hero scrolling images" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
         </div>
         <div className="col-span-1 aspect-square overflow-hidden rounded-xl shadow-2xl">
-            <img src={imagePaths.img5} alt="Skyline with architectural blocks" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
+            <img src={imagePaths.img5} alt="Hero scrolling images" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
         </div>
         <div className="">
-            <img src={imagePaths.img6} alt="Skyline with architectural blocks" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
+            <img src={imagePaths.img6} alt="Hero scrolling images" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"/>
         </div>
    
     </div>
@@ -111,7 +111,7 @@ const Home1 = async() => {
   return (
     <>
       <Head>
-        <title>{HeroData?.hero?.[0]?.title}</title>
+        <title>{HeroData?.hero?.[0]?.title ?? " "}</title>
       </Head>
       
       <section className="bg-white  pt-12 md:pt-20 lg:pt-24 max-w-[1400px] mx-auto">
@@ -119,18 +119,25 @@ const Home1 = async() => {
         <div className="container mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col justify-center py-8 lg:py-0">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-blue-600 leading-tight">
-            {HeroData?.hero?.[0]?.title}
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-blue-600 leading-tight">
+            {HeroData?.hero?.[0]?.title ?? " "}  
              
             </h1>
 
             <p className="mt-8 text-lg sm:text-xl text-gray-600 max-w-lg">
-             {HeroData?.hero?.[0]?.description}
+             {HeroData?.hero?.[0]?.description ?? " "}
             </p>
 
             <div className="mt-10 md:flex-row md:gap-1 gap-[10px] flex-col flex space-x-4">
-          <RoundedBgBtn label={HeroData?.hero?.[0]?.button1Text}></RoundedBgBtn>
-            <RoundedNotBGBtn label={HeroData?.hero?.[0]?.button2Text}></RoundedNotBGBtn>
+          
+<RoundedBgBtn 
+  label={HeroData?.hero?.[0]?.button1Text ?? " "} 
+  link={HeroData?.hero?.[0]?.button1Link ?? "#"} 
+/>
+          <RoundedNotBGBtn 
+  label={HeroData?.hero?.[0]?.button2Text ?? " "} 
+  link={HeroData?.hero?.[0]?.button2Link ?? "#"} 
+/>
             </div>
           </div>
           

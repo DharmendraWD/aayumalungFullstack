@@ -36,7 +36,10 @@ const BASE_API = process.env.BASE_API;
     <div id='gallery'>
     <H1 label="Gallery"></H1>
   <div className="grid grid-cols-1 sm:grid-cols-4 max-w-[1440px]  mx-auto auto-rows-[300px] sm:auto-rows-[350px]">
-      {Data?.gallary[0].images.map((image, index) => {
+    {
+      Data?.gallary?.[0]?.images?.length > 0 && 
+  
+      Data?.gallary[0].images.map((image, index) => {
         let colSpan = 'col-span-1';
 
         if (index === 0 || index === 5) colSpan = 'sm:col-span-2'; // first and last images

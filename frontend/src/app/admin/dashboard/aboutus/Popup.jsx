@@ -15,27 +15,27 @@ const router = useRouter()
   const [isOpen, setIsOpen] = useState(false);
 
   // capacity
-  const [capacityValue, setCapacityValue] = useState(aboutusData?.aboutus[0]?.capacity?.valueMW);
-  const [capacityDesc, setCapacityDesc] = useState(aboutusData?.aboutus[0]?.capacity?.description);
-  const [capacityTitle, setCapacityTitle] = useState(aboutusData?.aboutus[0]?.capacity?.title);
+  const [capacityValue, setCapacityValue] = useState(aboutusData?.aboutus[0]?.capacity?.valueMW ?? " ");
+  const [capacityDesc, setCapacityDesc] = useState(aboutusData?.aboutus[0]?.capacity?.description ?? " ");
+  const [capacityTitle, setCapacityTitle] = useState(aboutusData?.aboutus[0]?.capacity?.title ?? " ");
   // foundation 
-  const [foundationTitle, setFoundationTitle] = useState(aboutusData?.aboutus[0]?.foundation?.title);
-  const [foundationDesc, setFoundationDesc] = useState(aboutusData?.aboutus[0]?.foundation?.description);
+  const [foundationTitle, setFoundationTitle] = useState(aboutusData?.aboutus[0]?.foundation?.title ?? " ");
+  const [foundationDesc, setFoundationDesc] = useState(aboutusData?.aboutus[0]?.foundation?.description ?? " ");
   // heading
-  const [headingDesc, setHeadingDesc] = useState(aboutusData?.aboutus[0]?.headingDesc?.description);
-  const [headingTitle, setHeadingTitle] = useState(aboutusData?.aboutus[0]?.headingDesc?.title);
+  const [headingDesc, setHeadingDesc] = useState(aboutusData?.aboutus[0]?.headingDesc?.description ?? " ");
+  const [headingTitle, setHeadingTitle] = useState(aboutusData?.aboutus[0]?.headingDesc?.title ?? " ");
   
   // where we operate
-    const [whereWeOperateTitle, setWhereWeOperateTitle] = useState(aboutusData?.aboutus[0]?.whereWeOperate?.title);
-    const [whereWeOperateDesc, setWhereWeOperateDesc] = useState(aboutusData?.aboutus[0]?.whereWeOperate?.description);
+    const [whereWeOperateTitle, setWhereWeOperateTitle] = useState(aboutusData?.aboutus[0]?.whereWeOperate?.title ?? " ");
+    const [whereWeOperateDesc, setWhereWeOperateDesc] = useState(aboutusData?.aboutus[0]?.whereWeOperate?.description ?? " ");
 
   const [isloading, setisloading] = useState(false);
-  const [btn1Text, setbtn1Text] = useState(aboutusData?.aboutus[0]?.button1Text);
-  const [btn2Text, setbtn2Text] = useState(aboutusData?.aboutus[0]?.button2Text);
-  const [btn1Link, setbtn1Link] = useState(aboutusData?.aboutus[0]?.button1Link);
-  const [btn2Link, setbtn2Link] = useState(aboutusData?.aboutus[0]?.button2Link);
-  const [title, settitle] = useState(aboutusData?.aboutus[0]?.title);
-  const [desc, setdesc] = useState(aboutusData?.aboutus[0]?.description);
+  const [btn1Text, setbtn1Text] = useState(aboutusData?.aboutus[0]?.button1Text?? " ");
+  const [btn2Text, setbtn2Text] = useState(aboutusData?.aboutus[0]?.button2Text ?? " ");
+  const [btn1Link, setbtn1Link] = useState(aboutusData?.aboutus[0]?.button1Link ?? " ");
+  const [btn2Link, setbtn2Link] = useState(aboutusData?.aboutus[0]?.button2Link ?? " ");
+  const [title, settitle] = useState(aboutusData?.aboutus[0]?.title ?? " ");
+  const [desc, setdesc] = useState(aboutusData?.aboutus[0]?.description ?? " ");
   const [inputValue, setInputValue] = useState("");
   const [message, setMessage] = useState("");
 

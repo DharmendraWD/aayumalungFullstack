@@ -17,7 +17,7 @@ import mongoose from "mongoose";
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(`${process.env.MONGO_URI}/authDB`);
+    await mongoose.connect(`${process.env.MONGO_URI}/aayumalung`);
     console.log("MongoDB Connected");
   } catch (error) {
     console.error("DB Connection Error:", error);

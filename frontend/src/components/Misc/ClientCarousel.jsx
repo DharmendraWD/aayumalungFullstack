@@ -1,76 +1,4 @@
 
-// import React from 'react';
-
-// const clientLogos = [
-//   { src: 'https://fastly.picsum.photos/id/503/200/300.jpg?hmac=NvjgwV94HmYqnTok1qtlPsDxdf197x8fsWy5yheKlGg', alt: 'Client Logo 1' },
-//   { src: 'https://fastly.picsum.photos/id/729/200/200.jpg?hmac=hCw_uurY9O39ITS0MMk7fNNdWPaY20TzXz2NTAkEslU', alt: 'Client Logo 2' },
-//   { src: 'https://fastly.picsum.photos/id/872/200/200.jpg?hmac=m0AwAUFkEiEz2KW58n6a5RVkKaClHNylfppYjE3a0v4', alt: 'Client Logo 3' },
-//   { src: 'https://fastly.picsum.photos/id/927/200/200.jpg?hmac=8gJRiqNVrPAFPg0IyGTTYxaPJBSoLOVg4elvGEPV30M', alt: 'Client Logo 5' },
-// ];
-
-
-// const LogoSet = ({logos}) => (
-
-//     <div className="flex max-w-[1440px] flex-shrink-0 justify-around items-center w-full min-w-max space-x-12 sm:space-x-16 md:space-x-20 lg:space-x-24">
-//         {logos.map((logo, index) => (
-//             <div key={index} className="flex-shrink-0 opacity-50 hover:opacity-100 transition duration-300">
-//                 <img 
-//                     src={logo.src} 
-//                     alt={logo.alt} 
-                   
-//                     className="h-6 sm:h-7 md:h-8 lg:h-10 w-auto object-contain"
-//                 />
-//             </div>
-//         ))}
-//     </div>
-// );
-
-
-// const ClientCarousel = () => {
-
-//   const logosToDisplay = [...clientLogos, ...clientLogos]; 
-
-//   return (
-    
-//     <section className="bg-white py-10 md:py-16 overflow-hidden">
-//       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-
-//         <div className="flex flex-col lg:flex-row items-center lg:space-x-12">
-          
-//           {/* Heading */}
-//           <div className="flex-shrink-0 mb-6 lg:mb-0 lg:w-1/4">
-//             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 whitespace-nowrap">
-//               Clients include:
-//             </h2>
-//           </div>
-
-   
-//           <div className="flex w-full lg:w-3/4 overflow-hidden relative">
-            
-         
-//             <div 
-//               className="flex whitespace-nowrap animate-scroll-left w-full min-w-max"
-            
-//               style={{
-//                   animation: 'scroll-left 40s linear infinite',
-//               }}
-//             >
-        
-//               <LogoSet logos={logosToDisplay} />
-//               <LogoSet logos={logosToDisplay} />
-//             </div>
-
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default ClientCarousel;
-
-
-// components/Homepage.jsx
 
 import React from 'react';
 import img1 from "../../../public/img/hpower1.jpg";
@@ -103,17 +31,18 @@ const ClientCarousel = async () => {
           error = "Something went wrong.";
           throw new Error('Failed to fetch data');
         }
-        Data = await response.json();
+     let data1 = await response.json();
+        Data = data1;
 
  
     } catch (error) {
         console.error('Error fetching data:', error);
     }
 
-
-
+ 
 
   return (
+Data &&
     <div className=" max-w-[1440px] mx-auto bg-white p-4 sm:p-8"id='about-us'>
 
         <div className="relative min-h-[70vh] flex items-center justify-center py-16 sm:py-24 overflow-hidden bg-white font-[Inter]">
@@ -124,7 +53,7 @@ const ClientCarousel = async () => {
 
           
                 <div className="flex justify-center mb-8 sm:mb-12">
-                    <button className="px-6 py-2 bg-white text-gray-800 font-medium text-sm rounded-full shadow-lg transition duration-200 hover:shadow-xl hover:text-indigo-600 border border-gray-200">
+                    <button className="px-6 py-2 bg-white text-indigo-600 font-medium text-l rounded-full shadow-lg transition duration-200 hover:shadow-xl hover:text-gray-800  border border-gray-200">
                      {Data?.aboutus?.[0]?.headingDesc?.title}
                     </button>
                 </div>

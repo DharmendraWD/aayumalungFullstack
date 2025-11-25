@@ -18,7 +18,9 @@ resData = data?.footer
 
 
   return (
-    <section className="bg-white py-20 md:py-28 text-center">
+  resData.length >0 && 
+
+      <section className="bg-white py-20 md:py-28 text-center">
       <div className="container mx-auto px-4 max-w-4xl">
         
         {/* Main Heading */}
@@ -37,5 +39,8 @@ resData = data?.footer
        </Link>  
       </div>
     </section>
+
+      
+
   );
 }
