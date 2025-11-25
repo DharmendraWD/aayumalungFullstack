@@ -308,7 +308,10 @@ blog?.map((blog) => (
 {confirmDeleteIndex !== null && (
   <div className="fixed top-[0] inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
     <div className="bg-gray-800 absolute lg:right-[3%] right-[12px]  top-[50px] mt-4 mb-4 p-6 rounded-lg shadow-lg lg:w-[75%] w-[95%]">
-      <p className="mb-4 text-sm lg:max-h-[500px] max-h-[300px] my-scroll overflow-y-scroll text-gray-400">{selectedPara} </p>
+        <div className='mb-4 text-sm lg:max-h-[500px] max-h-[300px] my-scroll overflow-y-scroll text-gray-400'>
+
+        {selectedPara} 
+        </div>
       <div className="flex justify-end gap-3">
         <button
             onClick={()=> setConfirmDeleteIndex(null)}

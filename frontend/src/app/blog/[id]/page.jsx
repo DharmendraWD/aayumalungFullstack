@@ -117,7 +117,7 @@ const BASE_CONTENT = process.env.BASE_CONTENT
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 {/* Responsive Grid Container */}
-                <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-12 lg:gap-x-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-12 lg:gap-x-16">
                     
                     {/* Column 1: Main Content (Takes up 2/3 of the width on medium/large screens) */}
                     <div className="md:col-span-2 mb-10 md:mb-0">
@@ -126,7 +126,7 @@ const BASE_CONTENT = process.env.BASE_CONTENT
 
                     {/* Column 2: Newsletter Sidebar (Takes up 1/3 of the width on medium/large screens) */}
                     <div className="md:col-span-1">
-                        <NewsletterSidebar />
+                        {/* <NewsletterSidebar /> */}
                     </div>
 
                 </div>
@@ -135,19 +135,19 @@ const BASE_CONTENT = process.env.BASE_CONTENT
 
         <div>
 <div className='max-w-7xl mx-auto mt-8 mb-8 flex gap-4 justify-between'>
-    <h1 className='text-xl font-semibold'>Other Blogs</h1>
-    <Link  href="/blog">
+    <h1 className='text-xl ml-3 font-semibold'>Other Blogs</h1>
+    {/* <Link  href="/blog">
     <button className='bg-[#9999db] cursor-pointer px-[20px] py-[7px] text-[#272797]'>
         See all
     </button>
-    </Link>
+    </Link> */}
 </div>
-<div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-white">
+<div style={{justifyItems:"center"}} className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-white">
     
 
    {
     blogsss?.map((blog, index) => (
-        <div key={index} className="bg-white rounded-2xl rounded-br-[95px] shadow-xl transition-all duration-300 hover:shadow-2xl overflow-hidden flex flex-col h-full">
+        <div key={index} className="bg-white max-w-[400px] min-w-[400px] justify-between rounded-2xl rounded-br-[95px] shadow-xl transition-all duration-300 hover:shadow-2xl overflow-hidden flex flex-col h-full">
             {/* Image Container */}
             <div className="w-full h-auto overflow-hidden p-4">
                 <Image

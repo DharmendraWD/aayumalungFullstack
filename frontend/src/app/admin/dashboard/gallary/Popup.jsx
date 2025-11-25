@@ -69,7 +69,7 @@ setisImageOrNot(false)
         }
     });
     // -------------------------------------------------------------------
-console.log(images)
+// console.log(images)
     // ... rest of the fetch logic ...
     try {
       // ... (fetch code remains the same)
@@ -87,7 +87,7 @@ console.log(images)
         setisloading(false);
         setMessage(`Success: ${result.message}`);
         toast.success(result.message);
-        setHideMessageInterval(false);
+        setIsOpen(false);
         router.refresh()
         // Optionally update the images state with the new paths from the successful response
       } else {
@@ -125,7 +125,7 @@ console.log(images)
       d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"
     ></path>
   </svg>
-  Edit
+Add Image
 </button>
 </div>
 
@@ -171,14 +171,22 @@ console.log(images)
            <div>
   <div className="p-4">
       {/* File Input */}
+      {
+        images?.length <= 5 ?   <h1 className="text-red-400 mb-2 text-l text-center">For better View of your website please upload 6 images</h1>    : ""
+      }
 {
   images?.length >= 6 ?   <h1 className="text-red-300 mb-2 text-xl text-center">Only 6 Images are Allowed. Please Remove Some Images</h1>    : 
    <input
         type="file"
+        
         multiple
         accept="image/*"
         onChange={handleFileChange}
-        className="mb-4"
+        className="mb-4 block w-full text-sm text-slate-500
+        file:mr-4 file:py-2 file:px-4 file:rounded-md
+        file:border-0 file:text-sm file:font-semibold
+        file:bg-pink-50 file:text-pink-700
+        hover:file:bg-pink-300 cursor-pointer"
       />
      
 }

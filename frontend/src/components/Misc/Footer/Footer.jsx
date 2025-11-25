@@ -6,6 +6,7 @@ import { MdEmail, MdPhone, MdLocationOn } from 'react-icons/md';
 import { FaInstagram, FaTwitter, FaTelegramPlane, FaYoutube } from 'react-icons/fa';
 import map from '../../../../public/img/gallary/1.png';
 import "leaflet/dist/leaflet.css";
+import { useEffect, useState } from 'react';
 
 // --- MOCK DATA ---
 const navigationLinks = [
@@ -45,21 +46,54 @@ const navigationLinks = [
   },
 ];
 
-const contactInfo = {
-  email: "aayumalang@gmail.com",
-  phone: "+1 800 000 000",
-  location: "California, Santa Monica"
-};
 
-const socialLinks = [
-  { icon: FaInstagram, href: "#", label: "Instagram" },
-  { icon: FaTwitter, href: "#", label: "Twitter" },
-  { icon: FaTelegramPlane, href: "#", label: "Telegram" },
-  { icon: FaYoutube, href: "#", label: "YouTube" },
-];
+
+
+
+
 
 
 export default function Footer() {
+
+
+const [data, setdata] = useState([{
+  heading: "",
+  email: "",
+  desc: "",
+  phone: "",
+  map: "",
+  linkedin: "",
+  telegram: "",
+  x: "",
+  instagram: "",
+  youtube: "",
+  footerAboveHeading: "",
+  footerAboveDesc: "",
+  footerAboveBtnValue: "",
+  footerAboveBtnLink: "",
+  Copyrights: "",
+}])
+    const getData = async () => {
+      try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/homepage/footer`)
+      const data = await res.json()
+      setdata(data?.footer)
+        
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
+    useEffect(() => {
+      getData()
+    }, [])
+
+  const socialLinks = [
+    { icon: FaInstagram, href: data?.[0].instagram, label: "Instagram" },
+    { icon: FaTwitter, href: data?.[0].x, label: "Twitter" },
+    { icon: FaTelegramPlane, href: data?.[0].telegram, label: "Telegram" },
+    { icon: FaYoutube, href:data?.[0].youtube, label: "YouTube" },
+  ];
   
     const position = [37.7749, -122.4194]; // your latitude/longitude
   return (
@@ -97,21 +131,21 @@ export default function Footer() {
               
               <div className="flex items-start">
                 <MdEmail className="w-5 h-5 text-gray-500 mr-3 flex-shrink-0" />
-                <a href={`mailto:${contactInfo.email}`} className="text-gray-700 hover:text-primary1 transition-colors">
-                  {contactInfo.email}
+                <a href={`mailto:${data?.[0]?.email}`} className="text-gray-700 hover:text-primary1 transition-colors">
+                  {data?.[0]?.email}
                 </a>
               </div>
               
               <div className="flex items-start">
                 <MdPhone className="w-5 h-5 text-gray-500 mr-3 flex-shrink-0" />
-                <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`} className="text-gray-700 hover:text-primary1 transition-colors">
-                  {contactInfo.phone}
+                <a href={`tel:${data?.[0]?.phone + "kmza"}`} className="text-gray-700 hover:text-primary1 transition-colors">
+                  {data?.[0]?.phone }
                 </a>
               </div>
 
               <div className="flex items-start">
                 <MdLocationOn className="w-5 h-5 text-gray-500 mr-3 flex-shrink-0" />
-                <p className="text-gray-700">{contactInfo.location}</p>
+                <Link href={data?.[0]?.map} className="text-gray-700">{data?.[0].map}</Link>
               </div>
 
              
@@ -140,7 +174,7 @@ export default function Footer() {
 
                           <p className="text-gray-700 font-medium text-center mb-4">Our Location</p>
     <iframe
-        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14130.859891299282!2d85.3245952!3d27.695203000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snp!4v1762068999477!5m2!1sen!2snp"
+        src={data?.[0]?.map + "?output=embed"}
         width="100%"
         height="100%"
         style={{ border: 0 }}
@@ -155,7 +189,10 @@ export default function Footer() {
         {/* Copyright Section */}
         <div className="text-center pt-8 mt-12 border-t border-gray-200">
           <p className="text-gray-500 text-sm">
-            Copyrights@2025 Aayu Malung
+           {data?.[0]?.Copyrights}
+          </p>
+          <p className="text-gray-500 text-[12px]">
+            Developed by Aayusoft Tech
           </p>
         </div>
 

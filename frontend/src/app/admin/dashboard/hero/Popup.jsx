@@ -2,6 +2,7 @@
 import Loading from "../../loading";
 
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 
 import { FaTrash } from "react-icons/fa";
@@ -126,21 +127,19 @@ const handleSubmit = async (e) => {
       if (response.ok) {
         setisloading(false);
         setMessage(`Success: ${result.message}`);
-        setHideMessageInterval(false);
 
-        setTimeout(() => {
-          setHideMessageInterval(true);
-        }, 3000);
-        // Optionally update the images state with the new paths from the successful response
+ toast.success("Form submitted successfully");
       } else {
         setisloading(false);
         setMessage(`Error: ${result.message || "Failed to submit form"}`);
         console.error("API Error:", result);
+        toast.error("Failed to submit form");
       }
     } catch (error) {
       setisloading(false);
       setMessage("Connection error. Check console for details.");
       console.error("Error submitting form:", error);
+      toast.error("Connection error. Check console for details.");
     }
   }
 // ...
@@ -161,20 +160,19 @@ const handleImageDelete = async (delPath) => {
     if (response.ok) {
       setisloading(false);
       setMessage(`Success: ${result.message}`);
-             setHideMessageInterval(false);
 
-        setTimeout(() => {
-          setHideMessageInterval(true);
-        }, 3000);
+            toast.success("Image deleted successfully");
     } else {
       setisloading(false);
       setMessage(`Error: ${result.message || "Failed to delete image"}`);
       console.error("API Error:", result);
+      toast.error("Failed to delete image");
     }
   } catch (error) {
     setisloading(false);
     setMessage("Connection error. Check console for details.");
     console.error(error);
+    toast.error("Connection error. Check console for details.");
   }
 };
 
@@ -318,6 +316,10 @@ const handleImageDelete = async (delPath) => {
            <div>
   <div className="p-4">
       {/* File Input */}
+{
+  images?.length <= 5 ? <h1 className="text-red-400 mb-2 text-l text-center">For Best View Of Your Website Upload 6 Images.</h1> :""
+}
+      
 {
   images?.length >= 6 ?   <h1 className="text-red-300 mb-2 text-xl text-center">Only 6 Images are Allowed. Please Remove Some Images</h1>    : 
    <input

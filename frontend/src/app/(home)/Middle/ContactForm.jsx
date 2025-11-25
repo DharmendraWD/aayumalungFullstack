@@ -1,27 +1,48 @@
 // components/ContactForm.jsx
 "use client"; // Form interaction requires client-side behavior
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdEmail, MdPhone, MdLocationOn } from 'react-icons/md';
 import { FaLinkedinIn, FaTwitter, FaTelegramPlane, FaInstagram, FaYoutube } from 'react-icons/fa';
+import toast from 'react-hot-toast';
+import { Link } from 'lucide-react';
 
-// --- MOCK DATA ---
-const contactInfo = {
-  email: "aayumalang@gmail.com",
-  phone: "+1 800 000 000",
-  location: "Open Google Maps"
-};
 
-const socialLinks = [
-  { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
-  { icon: FaTwitter, href: "#", label: "Twitter" },
-  { icon: FaTelegramPlane, href: "#", label: "Telegram" },
-  { icon: FaInstagram, href: "#", label: "Instagram" },
-  { icon: FaYoutube, href: "#", label: "YouTube" },
-];
+
+
+
+
 
 
 const ContactForm = () => {
+    
+    const [data, setdata] = useState({ team: [] })
+    
+    const getData = async () => {
+      try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/homepage/footer`)
+      const data = await res.json()
+      setdata(data?.footer)
+        
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
+    useEffect(() => {
+      getData()
+    }, [])
+
+    const socialLinks = [
+  { icon: FaLinkedinIn, href:data[0]?.linkedin,label: "LinkedIn" },
+  { icon: FaTwitter, href:data[0]?.x , label: "Twitter" },
+  { icon: FaTelegramPlane, href: data[0]?.telegram, label: "Telegram" },
+  { icon: FaInstagram, href: data[0]?.instagram, label: "Instagram" },
+  { icon: FaYoutube, href: data[0]?.youtube, label: "YouTube" },
+];
+
+    
+
     // State to handle form inputs (necessary for client-side functionality)
     const [formData, setFormData] = useState({
         name: '',
@@ -33,12 +54,7 @@ const ContactForm = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // NOTE: In a real app, you would send formData to your API endpoint here
-        console.log("Form Submitted:", formData);
-        alert("Form submitted! (Check console for data)");
-    };
+
 
     // Helper component for the contact details list
     const ContactItem = ({ Icon, title, content, isLink = false }) => (
@@ -63,6 +79,37 @@ const ContactForm = () => {
         </div>
     );
 
+const [isloading, setisloading] = useState(false)
+
+    async  function addClientMess  (e) {
+                e.preventDefault();
+                setisloading(true)                
+                try {
+          const res= await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/homepage/client-message`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+
+            if(!res.ok) throw new Error( 'Something went wrong');
+
+            setisloading(false);
+            setFormData({
+                name: '',
+                email: '',
+                message: ''
+            });
+            
+            toast.success('Message sent successfully!');
+            
+        } catch (error) {
+            setisloading(false);
+           toast.error(error.message || "Something went wrong");
+        }
+    }
+
     return (
         <section className="bg-lightGrayBg py-12 md:py-24" id='contact'>
             <div className="container mx-auto px-4 max-w-[1440px]">
@@ -73,10 +120,10 @@ const ContactForm = () => {
                     {/* Left Column: Text and Contact Details */}
                     <div className="lg:pr-10">
                         <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6">
-                            Let's talk
+                    {data[0]?.heading ?   data[0]?.heading : "Get In Touch With Us. "}
                         </h2>
                         <p className="text-lg text-gray-700 mb-12 max-w-md">
-                            We collaborate with thousands of creators, entrepreneurs and complete legends.
+                          {data[0]?.desc}
                         </p>
 
                         {/* Contact Items */}
@@ -84,19 +131,19 @@ const ContactForm = () => {
                             <ContactItem 
                                 Icon={MdEmail} 
                                 title="My email" 
-                                content={contactInfo.email} 
+                                content={data[0]?.email} 
                                 isLink
                             />
                             <ContactItem 
                                 Icon={MdPhone} 
                                 title="Phone us" 
-                                content={contactInfo.phone} 
+                                content={data[0]?.phone}
                                 isLink={false}
                             />
                             <ContactItem 
                                 Icon={MdLocationOn} 
                                 title="Find me" 
-                                content={contactInfo.location} 
+                                content={data[0]?.map} 
                                 isLink
                             />
                         </div>
@@ -104,7 +151,8 @@ const ContactForm = () => {
                         {/* Footer Social Icons */}
                         <div className="flex space-x-4 pt-4 border-t border-gray-200">
                             {socialLinks.map((social, index) => (
-                                <a 
+                                <a
+
                                     key={index}
                                     href={social.href} 
                                     aria-label={social.label}
@@ -120,7 +168,7 @@ const ContactForm = () => {
 
                     {/* Right Column: Contact Form */}
                     <div className="p-8 sm:p-10 bg-white rounded-[30px] shadow-xl w-full">
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={addClientMess} className="space-y-6">
                             
                             {/* Name Input */}
                             <div>
@@ -134,6 +182,7 @@ const ContactForm = () => {
                                     placeholder="Jane Smith"
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary1 focus:border-primary1 transition-colors"
                                     required
+                                    disabled={isloading}
                                 />
                             </div>
 
@@ -149,6 +198,7 @@ const ContactForm = () => {
                                     placeholder="jane@framer.com"
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary1 focus:border-primary1 transition-colors"
                                     required
+                                    disabled={isloading}
                                 />
                             </div>
 
@@ -164,15 +214,18 @@ const ContactForm = () => {
                                     rows="5"
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary1 focus:border-primary1 transition-colors resize-none"
                                     required
+                                    disabled={isloading}
                                 />
                             </div>
 
                             {/* Submit Button */}
                             <button
+                                disabled={isloading}
+
                                 type="submit"
-                                className="w-full py-3 bg-[var(--primary1)] text-white text-lg font-semibold rounded-lg hover:bg-opacity-90 transition-all shadow-md"
+                                className="w-full cursor-pointer py-3 bg-[var(--primary1)] text-white text-lg font-semibold rounded-lg hover:bg-opacity-90 transition-all shadow-md"
                             >
-                                Submit
+                                {isloading ? 'Sending...' : 'Send Message'}
                             </button>
                         </form>
                     </div>

@@ -56,7 +56,7 @@ const page = async () => {
           
               src={ `${BASE_CONTENT}${img}`}
               alt={`hero-image-${index}`}
-              className="w-full h-full object-cover rounded-md"
+              className="w-full h-full object-cover rounded-md max-h-[85%]"
           
             />
               <p

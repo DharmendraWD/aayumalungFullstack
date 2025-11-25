@@ -1,11 +1,6 @@
 // components/CustomGallery.jsx
 import Image from 'next/image';
-import gl1 from "../../../../public/img/gallary/1.png"
-import gl2 from "../../../../public/img/gallary/2.png"
-import gl3 from "../../../../public/img/gallary/3.png"
-import gl4 from "../../../../public/img/gallary/4.png"
-import gl5 from "../../../../public/img/gallary/5.png"
-import gl6 from "../../../../public/img/gallary/6.png"
+
 import H1 from '@/components/Heading/H1';
 
 
@@ -35,16 +30,7 @@ const BASE_API = process.env.BASE_API;
 
 
 
-  const galleryImages = [
-    { id: 1, src: gl1, alt: 'Boudhanath Stupa, Kathmandu' }, // Will be wider (3 units)
-    { id: 2, src: gl2, alt: 'Hanuman Dhoka Palace, Kathmandu' }, // Narrow (1 unit)
-    { id: 3, src: gl3, alt: 'Parliament House, Kathmandu' }, // Narrow (1 unit)
-    { id: 4, src: gl4, alt: 'Sunset over Karnali Bridge' }, // Will be wider (3 units)
-    
-    { id: 5, src: gl5, alt: 'Dharan Clock Tower' },
-    { id: 6, src: gl6, alt: 'Boats on Begnas Lake, Pokhara' },
-  
-  ]
+
   return (
     <>
     <div id='gallery'>
@@ -60,7 +46,7 @@ const BASE_API = process.env.BASE_API;
         return (
           <div
             key={index}
-            className={`${colSpan}  relative rounded-lg group h-full w-full overflow-hidden`}
+            className={`${colSpan}  relative group h-full w-full overflow-hidden`}
           >
             <Image
               width={300}
@@ -68,7 +54,7 @@ const BASE_API = process.env.BASE_API;
               src={BASE_CONTENT+image}
               alt={"ksm"}
 unoptimized
-              className="object-cover w-full transition-transform duration-300 group-hover:scale-105"
+              className="object-cover w-full transition-transform duration-300 group-hover:scale-105 h-full w-full"
             />
           </div>
         );
