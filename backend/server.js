@@ -20,7 +20,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: [
-      "https://aayumalun.vercel.app",
+"https://aayumalun.up.railway.app",
       "http://localhost:3000"
     ],
     credentials: true,
