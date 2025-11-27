@@ -117,19 +117,19 @@ export const loginUser = async (req, res) => {
     //  Set cookies
         res.cookie('email', user.email, {
       httpOnly: true,
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
     });
     res.cookie('username', user.username, {
       httpOnly: true,
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
     });
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-        sameSite: "none",
+        sameSite: "lax",
         secure: true,
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
     });
