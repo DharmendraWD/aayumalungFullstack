@@ -12,25 +12,34 @@ import { fileURLToPath } from "url";
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// ----------------------------------------------------
 const allowedOrigins = [
-  'https://aayumalun.vercel.app',
-  'http://localhost:3000',
+  "https://aayumalun.up.railway.app",
+  "http://localhost:3000"
 ];
 
-app.use(
-  cors({
-    origin: [
-"https://aayumalun.up.railway.app",
-      "http://localhost:3000"
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors({
+  origin: function(origin, callback) {
+    // allow requests with no origin like mobile apps or curl
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      return callback(new Error("Not allowed by CORS"), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true, // important for cookies
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"]
+}));
 
+// Handle preflight
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
-app.set("trust proxy", 1);
+// ----------------------------------------------------
+
 
 
 // middleware 
