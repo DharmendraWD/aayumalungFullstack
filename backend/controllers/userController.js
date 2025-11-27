@@ -120,21 +120,18 @@ export const loginUser = async (req, res) => {
         sameSite: "none",
       secure: process.env.NODE_ENV === 'production',
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
-      sameSite: 'lax',
     });
     res.cookie('username', user.username, {
       httpOnly: true,
         sameSite: "none",
       secure: process.env.NODE_ENV === 'production',
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
-      sameSite: 'lax',
     });
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
         sameSite: "none",
       secure: process.env.NODE_ENV === 'production',
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
-      sameSite: 'lax',
     });
 
     // res.cookie('refreshToken', refreshToken, {
