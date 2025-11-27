@@ -118,19 +118,19 @@ export const loginUser = async (req, res) => {
         res.cookie('email', user.email, {
       httpOnly: true,
         sameSite: "none",
-      secure: process.env.NODE_ENV === 'production',
+        secure: true,
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
     });
     res.cookie('username', user.username, {
       httpOnly: true,
         sameSite: "none",
-      secure: process.env.NODE_ENV === 'production',
+        secure: true,
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
     });
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
         sameSite: "none",
-      secure: process.env.NODE_ENV === 'production',
+        secure: true,
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
     });
 
