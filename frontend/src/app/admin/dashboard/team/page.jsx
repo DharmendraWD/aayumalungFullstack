@@ -56,7 +56,7 @@ const page = async () => {
 }
 
 
-<div className="flex flex-wrap justify-between gap-4 px-4 mt-4">
+<div className="flex items-center justify-center flex-wrap justify-between gap-4 px-4 mt-4">
 {
   teamData?.team?.map((data, index) => (
     

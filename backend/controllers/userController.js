@@ -86,55 +86,6 @@ return res.status(500).json({"message":"Invalid TOken", success:false});
 }
 
 
-// export const loginUser = async (req, res) => {
-//     try {
-//       const { email, password } = req.body;
-//       console.log(req.body)
-// //   if blanks 
-// if (!email || !password) {
-//   return res.status(400).json({ message: "All fields are required" });
-// }
-
-//       // check existing user
-//       const user = await User.findOne({ email });
-//       if (!user) {
-//         return res.status(400).json({ message: "User does not exist" });
-//       }
-  
-//       // check password
-//       const isPasswordValid = await bcrypt.compare(password, user.password);
-//       if (!isPasswordValid) {
-//         return res.status(400).json({ message: "Invalid password" });
-//       }
-
-//     //   check if user verified 
-//     if(!user.isVerified){
-//         return res.status(400).json({message:"Please verify your email"});
-//     }
-  
-// // check if session exists then delete it 
-// const session = await Session.findOne({ userId: user._id });
-// if (session) {
-//   await session.deleteOne();
-// }
-
-// // if no session then create one 
-//  await Session.create({ userId: user._id });
-
-// //  generate token 
-// const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "10d" });
-// const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
-
-// user.isLoggedIn = true;
-// await user.save();
-
-// return res.status(200).json({ message: `Login successful ${user.username}`, 
-//     data: { accessToken: accessToken, refreshToken: refreshToken , user: user} });
-    
-//     } catch (error) {
-//       res.status(500).json({ message: error.message });
-//     }
-//   };
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -166,18 +117,21 @@ export const loginUser = async (req, res) => {
     //  Set cookies
         res.cookie('email', user.email, {
       httpOnly: true,
+        sameSite: "none",
       secure: process.env.NODE_ENV === 'production',
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
       sameSite: 'lax',
     });
     res.cookie('username', user.username, {
       httpOnly: true,
+        sameSite: "none",
       secure: process.env.NODE_ENV === 'production',
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
       sameSite: 'lax',
     });
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
+        sameSite: "none",
       secure: process.env.NODE_ENV === 'production',
       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days
       sameSite: 'lax',

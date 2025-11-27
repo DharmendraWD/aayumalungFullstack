@@ -110,7 +110,7 @@ function SidebarItem({ item, email, accessToken }) {
   </div>
 )}
 
-    <li className="relative">
+    <li className="relative" >
       <ContentTag
         {...contentProps}
         className={`flex items-center justify-between p-3 text-sm font-medium cursor-pointer transition-colors duration-200 rounded-md
