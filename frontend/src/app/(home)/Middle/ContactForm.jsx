@@ -111,7 +111,7 @@ const [isloading, setisloading] = useState(false)
     }
 
     return (
-        <section className="bg-lightGrayBg py-12 md:py-24" id='contact'>
+        <section className=" py-12 md:py-24" id='contact'>
             <div className="container mx-auto px-4 max-w-[1440px]">
                 
                 {/* Main Grid: Contact Info (Left) and Form (Right) */}

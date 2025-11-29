@@ -66,6 +66,9 @@ function SidebarItem({ item, email, accessToken }) {
     );
 
     const data = await res.json();
+    document.cookie = 'accessToken=; path=/; max-age=0';
+  document.cookie = 'username=; path=/; max-age=0';
+  document.cookie = 'email=; path=/; max-age=0';
     if (!res.ok) {
       console.error(data);
     toast.error("Logout failed");

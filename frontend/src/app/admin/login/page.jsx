@@ -40,11 +40,11 @@ const handleSubmit = async (e) => {
 
       const data = await res.json();
 
-         // ✅ Store token in localStorage if it exists
-    if (data?.data?.accessToken) {
-      localStorage.setItem('accessToken', data?.data?.accessToken);
-      console.log(data?.data)
-    }
+    //      // ✅ Store token in localStorage if it exists
+    // if (data?.data?.accessToken) {
+    //   localStorage.setItem('accessToken', data?.data?.accessToken);
+    //   console.log(data?.data)
+    // }
          document.cookie = `accessToken=${data?.data?.accessToken}; path=/`;
         document.cookie = `email=${data?.data?.user.email}; path=/`;
         document.cookie = `username=${data?.data?.user.username}; path=/`;
