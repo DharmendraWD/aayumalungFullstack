@@ -13,27 +13,28 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // ----------------------------------------------------
+app.set("trust proxy", 1);
 const allowedOrigins = [
-  'https://aayumalun.up.railway.app',
-  'http://localhost:3000',
+  "https://aayumalun.up.railway.app",
+  "http://localhost:3000"
 ];
 
 app.use(
   cors({
-    origin: [
-"https://aayumalun.up.railway.app",
-      "http://localhost:3000"
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-app.options("*", cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
+
 // ----------------------------------------------------
 
 

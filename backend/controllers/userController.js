@@ -115,22 +115,27 @@ export const loginUser = async (req, res) => {
     await user.save();
 
     //  Set cookies
-     res.cookie('accessToken', accessToken, {
-  httpOnly: true,       // prevents JS access
-  secure: true,         // required for HTTPS
-  sameSite: 'none',     // allows cross-site
-  maxAge: 10 * 24 * 60 * 60 * 1000,
-});
-res.cookie('email', user.email, {
+res.cookie("accessToken", accessToken, {
   httpOnly: true,
   secure: true,
-  sameSite: 'none',
+  sameSite: "none",
+  path: "/",
   maxAge: 10 * 24 * 60 * 60 * 1000,
 });
-res.cookie('username', user.username, {
+
+res.cookie("email", user.email, {
   httpOnly: true,
   secure: true,
-  sameSite: 'none',
+  sameSite: "none",
+  path: "/",
+  maxAge: 10 * 24 * 60 * 60 * 1000,
+});
+
+res.cookie("username", user.username, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  path: "/",
   maxAge: 10 * 24 * 60 * 60 * 1000,
 });
 
