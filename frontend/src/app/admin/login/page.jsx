@@ -40,8 +40,14 @@ const handleSubmit = async (e) => {
 
       const data = await res.json();
 
+         // ✅ Store token in localStorage if it exists
+    if (data?.data?.accessToken) {
+      localStorage.setItem('accessToken', data?.data?.accessToken);
+      console.log(data?.data?.accessToken)
+    }
       if (!res.ok) throw new Error(data.message || 'Login failed');
       setLoading(false);
+      
       toast.success('Login successful! Redirecting...');
       setTimeout(() => router.push('/admin/dashboard'), 1000);
     }catch (err) {
