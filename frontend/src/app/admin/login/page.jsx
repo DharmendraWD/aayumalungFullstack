@@ -43,8 +43,12 @@ const handleSubmit = async (e) => {
          // ✅ Store token in localStorage if it exists
     if (data?.data?.accessToken) {
       localStorage.setItem('accessToken', data?.data?.accessToken);
-      console.log(data?.data?.accessToken)
+      console.log(data?.data)
     }
+         document.cookie = `accessToken=${data?.data?.accessToken}; path=/`;
+        document.cookie = `email=${data?.data?.user.email}; path=/`;
+        document.cookie = `username=${data?.data?.user.username}; path=/`;
+        // document.cookie = `email=${data?.data?.username}; path=/`;
       if (!res.ok) throw new Error(data.message || 'Login failed');
       setLoading(false);
       
